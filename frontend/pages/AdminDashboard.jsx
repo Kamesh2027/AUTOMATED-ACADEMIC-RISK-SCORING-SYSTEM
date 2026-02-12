@@ -433,7 +433,6 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Faculty List Section */}
         {activeSection === "facultyList" && (
           <div className="section-content">
             <h2>Faculty List</h2>

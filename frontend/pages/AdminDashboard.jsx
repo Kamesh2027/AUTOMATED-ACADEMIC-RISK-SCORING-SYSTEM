@@ -214,6 +214,8 @@ export default function AdminDashboard() {
 
       setSuccessMessage("Faculty member added successfully!");
       setFacultyForm({ name: "", email: "", password: "" });
+      // refresh faculty list and dashboard counts
+      fetchFaculty();
       setLoading(false);
     } catch (err) {
       setError("Connection error: " + err.message);
@@ -436,8 +438,23 @@ export default function AdminDashboard() {
         {activeSection === "facultyList" && (
           <div className="section-content">
             <h2>Faculty List</h2>
-            <div style={{ padding: "2rem", textAlign: "center", color: "#999" }}>
-              <p>Faculty management coming soon</p>
+            <div className="table-container">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {faculty.map((f) => (
+                    <tr key={f._id}>
+                      <td>{f.name}</td>
+                      <td>{f.email}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}

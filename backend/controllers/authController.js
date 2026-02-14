@@ -68,3 +68,17 @@ exports.getFaculty = async (req, res) => {
     res.status(500).json({ message: "Error fetching faculty", error: error.message });
   }
 };
+
+// allow admin to remove a faculty member by id
+exports.deleteFaculty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const faculty = await User.findOneAndDelete({ _id: id, role: "faculty" });
+    if (!faculty) {
+      return res.status(404).json({ message: "Faculty member not found" });
+    }
+    res.json({ message: "Faculty member deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting faculty", error: error.message });
+  }
+};

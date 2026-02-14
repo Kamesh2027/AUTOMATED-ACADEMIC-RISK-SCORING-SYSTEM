@@ -178,31 +178,33 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  /* keep background transparent to let page color show through */
 }
 
 .table thead {
-  background-color: #f5f7fa;
+  /* no background color, keep header text bold only */
   border-bottom: 2px solid #e0e0e0;
 }
 
 .table th {
   padding: 1rem;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   color: #333;
   font-size: 14px;
+  border: 1px solid #e0e0e0;
 }
 
 .table td {
   padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e0;
   color: #666;
   font-size: 14px;
+  text-align: center;
 }
 
 .table tbody tr:hover {
-  background-color: #f9f9f9;
+  background-color: transparent;
 }
 
 /* Dashboard Table Styling */
@@ -462,4 +464,23 @@
   background: #f1f1f1;
   color: #333;
   border: none;
+}
+
+/* dashboard overview: align count column right */
+.dashboard-table .metric-value {
+  text-align: center;
+}
+
+/* faculty list: center action buttons */
+.table th:last-child,
+.table td:last-child {
+  text-align: center;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
 }

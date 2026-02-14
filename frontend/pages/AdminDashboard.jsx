@@ -48,6 +48,10 @@ export default function AdminDashboard() {
   const [successMessage, setSuccessMessage] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState(null);
+  // faculty delete states
+  const [showFacultyDeleteModal, setShowFacultyDeleteModal] = useState(false);
+  const [facultyToDelete, setFacultyToDelete] = useState(null);
+
   const [activeSection, setActiveSection] = useState("dashboard");
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
@@ -281,6 +285,11 @@ export default function AdminDashboard() {
     setShowDeleteModal(true);
   };
 
+  const handleDeleteFaculty = (facultyId) => {
+    setFacultyToDelete(facultyId);
+    setShowFacultyDeleteModal(true);
+  };
+
   const confirmDeleteStudent = async () => {
     if (!studentToDelete) return;
     setShowDeleteModal(false);
@@ -304,9 +313,37 @@ export default function AdminDashboard() {
     }
   };
 
+  const confirmDeleteFaculty = async () => {
+    if (!facultyToDelete) return;
+    setShowFacultyDeleteModal(false);
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/faculty/${facultyToDelete}`, {
+        method: "DELETE"
+      });
+
+      if (!response.ok) {
+        setError("Failed to delete faculty member");
+        setFacultyToDelete(null);
+        return;
+      }
+
+      setSuccessMessage("Faculty member deleted successfully!");
+      setFacultyToDelete(null);
+      fetchFaculty();
+    } catch (err) {
+      setError("Connection error: " + err.message);
+      setFacultyToDelete(null);
+    }
+  };
+
   const cancelDeleteStudent = () => {
     setStudentToDelete(null);
     setShowDeleteModal(false);
+  };
+
+  const cancelDeleteFaculty = () => {
+    setFacultyToDelete(null);
+    setShowFacultyDeleteModal(false);
   };
 
   const handleLogout = () => {
@@ -333,6 +370,22 @@ export default function AdminDashboard() {
                   Delete
                 </button>
                 <button className="btn" onClick={cancelDeleteStudent}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {showFacultyDeleteModal && (
+          <div className="modal-overlay">
+            <div className="confirm-modal">
+              <h3>Confirm Delete</h3>
+              <p>Are you sure you want to delete this faculty member?</p>
+              <div className="modal-actions">
+                <button className="btn btn-danger" onClick={confirmDeleteFaculty}>
+                  Delete
+                </button>
+                <button className="btn" onClick={cancelDeleteFaculty}>
                   Cancel
                 </button>
               </div>
@@ -444,6 +497,7 @@ export default function AdminDashboard() {
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -451,6 +505,14 @@ export default function AdminDashboard() {
                     <tr key={f._id}>
                       <td>{f.name}</td>
                       <td>{f.email}</td>
+                      <td>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleDeleteFaculty(f._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -55,7 +55,7 @@ const Login = () => {
       justifyContent: "center", 
       alignItems: "center",
       minHeight: "100vh",
-      backgroundColor: "#f0f0f0"
+      backgroundColor: "#bbeeeb"
     }}>
       <div style={{
         backgroundColor: "white",
@@ -65,8 +65,8 @@ const Login = () => {
         maxWidth: "400px",
         width: "100%"
       }}>
-        <h1 style={{ textAlign: "center", marginBottom: "10px", color: "#333" }}>AARSS</h1>
-        <p style={{ textAlign: "center", marginBottom: "30px", color: "#666" }}>Academic At-Risk Student System</p>
+        <h1 style={{ textAlign: "center", marginBottom: "10px", color: "#65b2bf" }}>AARSS</h1>
+        <p style={{ textAlign: "center", marginBottom: "30px", color: "#565353" }}>Academic Portal</p>
 
         {error && (
           <div style={{
@@ -132,35 +132,36 @@ const Login = () => {
             style={{
               width: "100%",
               padding: "12px",
-              backgroundColor: "#667eea",
+              backgroundColor: "#65b2bf",
               color: "white",
               border: "none",
               borderRadius: "6px",
               fontSize: "16px",
               fontWeight: "bold",
               cursor: loading ? "not-allowed" : "pointer",
-              opacity: loading ? 0.8 : 1
+              opacity: loading ? 0.8 : 1,
+              marginBottom: "30px"
             }}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        <div style={{
+        {/* <div style={{
           marginTop: "30px",
           paddingTop: "20px",
           borderTop: "1px solid #eee",
           backgroundColor: "#f9f9f9",
           padding: "15px",
           borderRadius: "6px"
-        }}>
+        }}> 
           <p style={{ fontWeight: "bold", marginBottom: "12px", color: "#333", textAlign: "center" }}>Demo Credentials:</p>
           <div style={{ fontSize: "13px", color: "#555", lineHeight: "1.8" }}>
             <p><strong>Admin:</strong> admin@email.com / password</p>
             <p><strong>Faculty:</strong> faculty@email.com / password</p>
             <p><strong>Student:</strong> student@email.com / password</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

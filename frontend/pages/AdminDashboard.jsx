@@ -99,7 +99,7 @@ export default function AdminDashboard() {
 
   const validateStudentForm = () => {
     let isValid = true;
-    
+
     // Check for duplicate email
     if (studentForm.email && students.some(s => s.email === studentForm.email)) {
       setEmailError("This email is already registered");
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
     } else {
       setEmailError("");
     }
-    
+
     // Check for duplicate regNo
     if (studentForm.regNo && students.some(s => s.regNo === studentForm.regNo)) {
       setRegNoError("This registration number is already registered");
@@ -115,13 +115,13 @@ export default function AdminDashboard() {
     } else {
       setRegNoError("");
     }
-    
+
     return isValid;
   };
 
   const validateFacultyForm = () => {
     let isValid = true;
-    
+
     // Check for duplicate email in both students and faculty
     if (facultyForm.email && (students.some(s => s.email === facultyForm.email) || faculty.some(f => f.email === facultyForm.email))) {
       setFacultyEmailError("This email is already registered");
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
     } else {
       setFacultyEmailError("");
     }
-    
+
     return isValid;
   };
 
@@ -137,13 +137,13 @@ export default function AdminDashboard() {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
-    
+
     // Validate for duplicates
     if (!validateStudentForm()) {
       setLoading(false);
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -187,13 +187,13 @@ export default function AdminDashboard() {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
-    
+
     // Validate for duplicates
     if (!validateFacultyForm()) {
       setLoading(false);
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -355,7 +355,7 @@ export default function AdminDashboard() {
     <div className="admin-dashboard">
       <Navbar user={user} onLogout={handleLogout} />
       <AdminSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
-      
+
       <div className="dashboard-container">
         {error && <div className="alert alert-error">{error}</div>}
         {successMessage && <div className="alert alert-success">{successMessage}</div>}
@@ -395,48 +395,52 @@ export default function AdminDashboard() {
 
         {/* Dashboard Section */}
         {activeSection === "dashboard" && (
-          <div className="section-content">
-            <h2>Dashboard Overview</h2>
-            <div className="table-container">
-              <table className="dashboard-table">
-                <thead>
-                  <tr>
-                    <th className="metric">Metric</th>
-                    <th className="metric">Count</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="metric-label">Total Students</td>
-                    <td className="metric-value">{students.length}</td>
-                  </tr>
-                  <tr>
-                    <td className="metric-label">Total Faculties</td>
-                    <td className="metric-value">{faculty.length}</td>
-                  </tr>
-                  <tr className="risk-row">
-                    <td className="metric-label">Low Risk Students</td>
-                    <td className="metric-value" style={{ fontWeight: "bold" }}>
-                      {students.filter(s => s.riskLevel === "Low").length}
-                    </td>
-                  </tr>
-                  <tr className="risk-row">
-                    <td className="metric-label">Medium Risk Students</td>
-                    <td className="metric-value" style={{ fontWeight: "bold" }}>
-                      {students.filter(s => s.riskLevel === "Medium").length}
-                    </td>
-                  </tr>
-                  <tr className="risk-row">
-                    <td className="metric-label">High Risk Students</td>
-                    <td className="metric-value" style={{ fontWeight: "bold" }}>
-                      {students.filter(s => s.riskLevel === "High").length}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          <div className="dashboard-overview">
+            <h2 className="do">Dashboard Overview</h2>
+
+            {/* Stat Cards */}
+            <div className="stats-grid">
+              <div className="stat-card">
+                <h4>Total Students</h4>
+                <p className="stat-number">{students.length}</p>
+              </div>
+
+              <div className="stat-card">
+                <h4>Total Faculty</h4>
+                <p className="stat-number">{faculty.length}</p>
+              </div>
+
+              <div className="stat-card danger">
+                <h4>At Risk Students</h4>
+                <p className="stat-number">
+                  {students.filter(s => s.riskLevel === "High").length}
+                </p>
+              </div>
+
+              
+            </div>
+
+            {/* Bottom Section */}
+            <div className="dashboard-bottom">
+              {/* Risk Summary */}
+              <div className="card">
+                <h3 className="rds">Risk Distribution Summary</h3>
+                <ul className="risk-list">
+                  <li>
+                    Low Risk <span>{students.filter(s => s.riskLevel === "Low").length}</span>
+                  </li>
+                  <li>
+                    Medium Risk <span>{students.filter(s => s.riskLevel === "Medium").length}</span>
+                  </li>
+                  <li className="critical">
+                    High Risk <span>{students.filter(s => s.riskLevel === "High").length}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         )}
+
 
         {/* Student List Section */}
         {activeSection === "studentList" && (

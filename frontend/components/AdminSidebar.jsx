@@ -12,9 +12,6 @@ export const AdminSidebar = ({ activeSection, onSectionChange }) => {
 
   return (
     <aside className="admin-sidebar">
-      {/* <div className="sidebar-header">
-        <h2>Admin Panel</h2>
-      </div> */}
       <nav className="sidebar-nav">
         {sections.map((section) => (
           <button

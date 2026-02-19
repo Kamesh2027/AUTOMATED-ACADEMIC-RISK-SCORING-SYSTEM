@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Navbar } from "../components/Navbar";
 import { AdminSidebar } from "../components/AdminSidebar";
 import "./AdminDashboard.css";
+//import { API_BASE_URL } from "../config";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -528,7 +529,7 @@ export default function AdminDashboard() {
         {/* Add Student Section */}
         {activeSection === "addStudent" && (
           <div className="section-content">
-            <h2>Add New Student</h2>
+            <h2 className="addnewstudent">Add New Student</h2>
             <form onSubmit={handleAddStudent} className="form">
               <div className="form-row">
                 <div className="form-group">
@@ -618,7 +619,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary" disabled={loading}>
+              <button type="submit" className="addstd btn btn-primary" disabled={loading}>
                 {loading ? "Adding..." : "Add Student"}
               </button>
             </form>
@@ -628,7 +629,7 @@ export default function AdminDashboard() {
         {/* Add Faculty Section */}
         {activeSection === "addFaculty" && (
           <div className="section-content">
-            <h2>Add New Faculty Member</h2>
+            <h2 className="addnewfaculty">Add New Faculty Member</h2>
             <form onSubmit={handleAddFaculty} className="form">
               <div className="form-group">
                 <label>Full Name</label>
@@ -681,7 +682,7 @@ export default function AdminDashboard() {
         {/* Risk Settings Section */}
         {activeSection === "riskSettings" && (
           <div className="section-content">
-            <h2>Risk Level Settings</h2>
+            <h2 className="risklevel">Risk Level Settings</h2>
             <form onSubmit={handleUpdateSettings} className="form">
               <div className="settings-section">
                 <h3>Weight Distribution (must sum to 100%)</h3>

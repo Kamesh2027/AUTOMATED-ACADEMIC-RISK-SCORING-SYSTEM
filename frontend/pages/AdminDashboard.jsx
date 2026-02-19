@@ -4,9 +4,9 @@ import { AuthContext } from "../context/AuthContext";
 import { Navbar } from "../components/Navbar";
 import { AdminSidebar } from "../components/AdminSidebar";
 import "./AdminDashboard.css";
-//import { API_BASE_URL } from "../config";
+import { API_BASE_URL } from "../config";
 
-const API_BASE_URL = "http://localhost:5000/api";
+//const API_BASE_URL = "http://localhost:5000/api";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();

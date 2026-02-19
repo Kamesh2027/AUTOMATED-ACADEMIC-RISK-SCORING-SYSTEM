@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Navbar } from "../components/Navbar";
 import "./FacultyDashboard.css";
-//import { API_BASE_URL } from "../config";
+import { API_BASE_URL } from "../config";
 
-const API_BASE_URL = "http://localhost:5000/api";
+//const API_BASE_URL = "http://localhost:5000/api";
 
 export default function FacultyDashboard() {
   const navigate = useNavigate();

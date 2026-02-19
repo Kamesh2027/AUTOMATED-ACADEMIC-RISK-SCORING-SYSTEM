@@ -22,7 +22,6 @@ export const AdminSidebar = ({ activeSection, onSectionChange }) => {
             className={`sidebar-item ${activeSection === section.id ? "active" : ""}`}
             onClick={() => onSectionChange(section.id)}
           >
-            <span className="sidebar-icon">{section.icon}</span>
             <span className="sidebar-label">{section.label}</span>
           </button>
         ))}

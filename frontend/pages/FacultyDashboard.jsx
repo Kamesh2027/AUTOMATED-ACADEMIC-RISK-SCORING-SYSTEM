@@ -13,6 +13,7 @@ export default function FacultyDashboard() {
 
   const [students, setStudents] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,10 +38,13 @@ export default function FacultyDashboard() {
     }
   };
 
-  const filtered =
-    filter === "All"
-      ? students
-      : students.filter((s) => s.riskLevel === filter);
+  const filtered = students
+    .filter((s) => filter === "All" || s.riskLevel === filter)
+    .filter((s) => 
+      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.regNo.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   const handleUpdateMarks = async (e) => {
     e.preventDefault();
@@ -96,7 +100,7 @@ export default function FacultyDashboard() {
     <div className="faculty-dashboard">
       <Navbar user={user} onLogout={handleLogout} />
 
-      <div className="dashboard-container">
+      <div className="fdashboard-container">
         <div className="header">
           <h1>Faculty Dashboard</h1>
           <p>Manage and update student performance metrics</p>
@@ -106,17 +110,28 @@ export default function FacultyDashboard() {
         {successMessage && <div className="alert alert-success">{successMessage}</div>}
 
         <div className="filter-section">
-          <label>Filter by Risk Level:</label>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="filter-select"
-          >
-            <option value="All">All Students</option>
-            <option value="Low">Low Risk</option>
-            <option value="Medium">Medium Risk</option>
-            <option value="High">High Risk</option>
-          </select>
+          <div className="filter-group">
+            <label>Filter by Risk Level:</label>
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">All Students</option>
+              <option value="Low">Low Risk</option>
+              <option value="Medium">Medium Risk</option>
+              <option value="High">High Risk</option>
+            </select>
+          </div>
+          <div className="search-group">
+            <input
+              type="text"
+              placeholder="Search by name, email, or reg no..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
+            />
+          </div>
           <span className="student-count">
             Showing {filtered.length} of {students.length} students
           </span>

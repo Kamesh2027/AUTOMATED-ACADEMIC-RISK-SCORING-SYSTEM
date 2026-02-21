@@ -1,8 +1,8 @@
 .admin-dashboard {
   margin-top: 60px;
-  background-color: #f5f7fa;
+  background-color: #bbeeeb;
   min-height: 100vh;
-  font-family: "Roboto", sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .dashboard-container {
@@ -27,9 +27,9 @@
 
 .section-content {
   background: white;
-  padding: 1.2rem;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-left: 70px;
 }
 
@@ -87,8 +87,8 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #65b2bf;
+  box-shadow: 0 0 0 3px rgba(101, 178, 191, 0.1);
 }
 
 .form-group input:disabled {
@@ -115,13 +115,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #5b5ff0 100%) !important;
+  background: linear-gradient(135deg, #65b2bf 0%, #54a1ad 100%) !important;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 20px rgba(101, 178, 191, 0.4);
 }
 
 .btn-primary:disabled {
@@ -213,14 +213,14 @@
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border: 2px solid #667eea;
-  border-radius: 2px;
+  border: 2px solid #65b2bf;
+  border-radius: 12px;
   overflow: hidden;
 }
 
 .dashboard-table thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-bottom: 3px solid #667eea;
+  background: linear-gradient(135deg, #65b2bf 0%, #54a1ad 100%);
+  border-bottom: 3px solid #65b2bf;
 }
 
 .dashboard-table th {

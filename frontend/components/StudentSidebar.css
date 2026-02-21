@@ -1,12 +1,12 @@
 .student-sidebar {
   width: 250px;
-  background: linear-gradient(135deg, #6366f1 0%, #5b5ff0 100%);
+  background: linear-gradient(135deg, #65b2bf 0%, #54a1ad 100%);
   height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
-  padding-top: 55px;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  padding-top: 65px;
+  box-shadow: 4px 0 15px rgba(101, 178, 191, 0.3);
   overflow-y: auto;
   z-index: 99;
 }
@@ -14,43 +14,64 @@
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  padding: 1rem 0;
+  padding: 1.5rem 1rem;
+  gap: 0.5rem;
 }
 
 .sidebar-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.875rem 1.5rem;
+  padding: 1rem 1.25rem;
   background: rgba(255, 255, 255, 0);
-  border-color: rgba(255, 255, 255, 0.15);
-  border-radius: 15px;
-  color: rgba(255, 255, 255, 0.832);
+  border: none;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.95);
   cursor: pointer;
-  font-size: 17px;
-  font-weight: 500;
-  text-align: center;
-  margin-bottom: 5px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
   transition: all 0.3s ease;
   width: 100%;
+  border-left: 3px solid transparent;
 }
 
 .sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   color: white;
+  transform: translateX(5px);
+  border-left-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-item.active {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);
   color: white;
-  border-left: 4px solid rgba(255, 255, 255, 0.774);
-  border-right: 4px solid rgba(255, 255, 255, 0.774);
-  padding-left: calc(1.5rem - 4px);
-  border-radius: 15px;
+  border-left: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
 }
 
 .sidebar-label {
   flex: 1;
+}
+
+/* Custom Scrollbar */
+.student-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.student-sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.student-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.student-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {

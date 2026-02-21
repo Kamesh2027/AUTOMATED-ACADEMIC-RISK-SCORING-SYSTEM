@@ -1,14 +1,14 @@
 .faculty-dashboard {
   margin-top: 60px;
-  background-color: #f5f7fa;
+  background-color: #bbeeeb;
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
+.fdashboard-container {
+  max-width: 100%;
+  margin: 0;
+  padding: 2rem 3rem;
 }
 
 .header {
@@ -35,11 +35,19 @@
   align-items: center;
   gap: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .filter-section label {
   font-weight: 600;
   color: #333;
+  white-space: nowrap;
 }
 
 .filter-select {
@@ -54,8 +62,35 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #65b2bf;
+  box-shadow: 0 0 0 3px rgba(101, 178, 191, 0.1);
+}
+
+.search-group {
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input {
+  width: 50%;
+  padding: 0.75rem 1.25rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s;
+  background: #f9f9f9;
+  margin-left: 450px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #65b2bf;
+  box-shadow: 0 0 0 3px rgba(101, 178, 191, 0.1);
+  background: white;
+}
+
+.search-input::placeholder {
+  color: #999;
 }
 
 .student-count {
@@ -63,6 +98,7 @@
   color: #666;
   font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .alert {
@@ -166,8 +202,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #65b2bf;
+  box-shadow: 0 0 0 3px rgba(101, 178, 191, 0.1);
 }
 
 .form-group input:disabled {
@@ -192,7 +228,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #65b2bf 0%, #54a1ad 100%);
   color: white;
 }
 
@@ -235,7 +271,7 @@
 }
 
 .card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #65b2bf 0%, #54a1ad 100%);
   color: white;
   padding: 1.5rem;
   display: flex;
@@ -330,7 +366,7 @@
 }
 
 .metric .value.score {
-  color: #667eea;
+  color: #65b2bf;
 }
 
 .risk-info {
@@ -364,6 +400,18 @@
   font-size: 16px;
 }
 
+@media (max-width: 1400px) {
+  .students-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .students-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .students-grid {
     grid-template-columns: 1fr;
@@ -371,7 +419,22 @@
 
   .filter-section {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    width: 100%;
+    flex-direction: column;
     align-items: flex-start;
+  }
+
+  .search-group {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .filter-select {
+    width: 100%;
   }
 
   .student-count {

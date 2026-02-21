@@ -27,8 +27,15 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        setError(data.message || "Login failed");
+        let errorMessage = "Login failed";
+        try {
+          const data = await response.json();
+          errorMessage = data.message || errorMessage;
+        } catch (e) {
+          // If response is not JSON, use status text
+          errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        }
+        setError(errorMessage);
         setLoading(false);
         return;
       }
@@ -42,7 +49,8 @@ const Login = () => {
       else if (data.role === "student") navigate("/student");
       else navigate("/");
     } catch (err) {
-      setError("Connection error: " + err.message);
+      console.error("Login error:", err);
+      setError("Connection error: " + (err.message || "Cannot reach server"));
       setLoading(false);
     }
   };

@@ -2,6 +2,10 @@
 
 A comprehensive web application designed to monitor and manage at-risk students in an academic institution.
 
+## 🚀 Deployment
+
+**Ready to deploy?** Check out the **[DEPLOYMENT.md](DEPLOYMENT.md)** guide for step-by-step instructions to deploy on Render (free tier available).
+
 ## Features
 
 ### 🔐 Authentication System

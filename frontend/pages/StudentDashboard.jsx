@@ -16,6 +16,8 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeSection, setActiveSection] = useState("profileInfo");
+  const [feedback, setFeedback] = useState([]);
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
 
   useEffect(() => {
     fetchStudentData();
@@ -39,9 +41,64 @@ export default function StudentDashboard() {
 
       setStudent(data);
       setLoading(false);
+      
+      // Fetch feedback after student data is loaded
+      fetchFeedback(user.email);
     } catch (err) {
       setError("Failed to fetch student data: " + err.message);
       setLoading(false);
+    }
+  };
+
+  const fetchFeedback = async (email) => {
+    setFeedbackLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/feedback/student/${email}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setFeedback(data);
+      }
+      setFeedbackLoading(false);
+    } catch (err) {
+      console.error("Failed to fetch feedback:", err.message);
+      setFeedbackLoading(false);
+    }
+  };
+
+  const markFeedbackAsRead = async (feedbackId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}/read`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      if (response.ok) {
+        // Update local feedback state
+        setFeedback(feedback.map(f => 
+          f._id === feedbackId ? { ...f, isRead: true } : f
+        ));
+      }
+    } catch (err) {
+      console.error("Failed to mark feedback as read:", err.message);
+    }
+  };
+
+  const handleDeleteFeedback = async (feedbackId) => {
+    if (!window.confirm("Are you sure you want to delete this feedback?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
+        method: "DELETE"
+      });
+
+      if (response.ok) {
+        setFeedback(feedback.filter(f => f._id !== feedbackId));
+      }
+    } catch (err) {
+      console.error("Failed to delete feedback:", err.message);
     }
   };
 
@@ -225,6 +282,78 @@ export default function StudentDashboard() {
                   </div>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Feedback Section */}
+          {activeSection === "feedback" && (
+            <div className="feedback-section">
+              <div className="feedback-header">
+                <h2>Feedback from Faculty</h2>
+                <span className="feedback-count">{feedback.length} message{feedback.length !== 1 ? 's' : ''}</span>
+              </div>
+
+              {feedbackLoading ? (
+                <div className="loading-text">Loading feedback...</div>
+              ) : feedback.length === 0 ? (
+                <div className="no-feedback">
+                  <p>No feedback yet. Keep up the good work!</p>
+                </div>
+              ) : (
+                <div className="feedback-list">
+                  {feedback.map((item) => (
+                    <div key={item._id} className={`feedback-card ${item.isRead ? 'read' : 'unread'}`}>
+                      <div className="feedback-header-row">
+                        <div className="feedback-info">
+                          <h3>{item.title}</h3>
+                          <p className="faculty-name">From: {item.facultyName}</p>
+                        </div>
+                        <div className="feedback-badges">
+                          <span className={`badge-category badge-${item.category.toLowerCase()}`}>
+                            {item.category}
+                          </span>
+                          <span className={`badge-priority badge-priority-${item.priority.toLowerCase()}`}>
+                            {item.priority}
+                          </span>
+                          {!item.isRead && <span className="badge-unread">New</span>}
+                        </div>
+                      </div>
+
+                      <div className="feedback-message">
+                        <p>{item.message}</p>
+                      </div>
+
+                      <div className="feedback-footer">
+                        <span className="feedback-date">
+                          {new Date(item.createdAt).toLocaleDateString(undefined, {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                        <div className="feedback-actions">
+                          {!item.isRead && (
+                            <button
+                              className="btn-small btn-read"
+                              onClick={() => markFeedbackAsRead(item._id)}
+                            >
+                              Mark as Read
+                            </button>
+                          )}
+                          <button
+                            className="btn-small btn-delete"
+                            onClick={() => handleDeleteFeedback(item._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

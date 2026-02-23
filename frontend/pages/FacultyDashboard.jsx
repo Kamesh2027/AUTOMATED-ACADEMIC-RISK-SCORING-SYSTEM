@@ -23,6 +23,13 @@ export default function FacultyDashboard() {
     marks: 0,
     assignments: 0
   });
+  const [feedbackStudent, setFeedbackStudent] = useState(null);
+  const [feedbackForm, setFeedbackForm] = useState({
+    title: "",
+    message: "",
+    category: "Academic",
+    priority: "Medium"
+  });
 
   useEffect(() => {
     fetchStudents();
@@ -89,6 +96,53 @@ export default function FacultyDashboard() {
       marks: student.marks,
       assignments: student.assignments
     });
+  };
+
+  const startFeedback = (student) => {
+    setFeedbackStudent(student);
+    setFeedbackForm({
+      title: "",
+      message: "",
+      category: "Academic",
+      priority: "Medium"
+    });
+  };
+
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMessage("");
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          studentEmail: feedbackStudent.email,
+          title: feedbackForm.title,
+          message: feedbackForm.message,
+          category: feedbackForm.category,
+          priority: feedbackForm.priority,
+          facultyName: user.name
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Failed to send feedback");
+        setLoading(false);
+        return;
+      }
+
+      setSuccessMessage("Feedback sent successfully!");
+      setFeedbackStudent(null);
+      setLoading(false);
+    } catch (err) {
+      setError("Connection error: " + err.message);
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {
@@ -211,6 +265,100 @@ export default function FacultyDashboard() {
           </div>
         )}
 
+        {feedbackStudent && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <div className="modal-header">
+                <h2>Give Feedback - {feedbackStudent.name}</h2>
+                <button
+                  className="close-btn"
+                  onClick={() => setFeedbackStudent(null)}
+                >
+                  ×
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmitFeedback} className="form">
+                <div className="form-group">
+                  <label>Title</label>
+                  <input
+                    type="text"
+                    placeholder="Feedback title"
+                    value={feedbackForm.title}
+                    onChange={(e) =>
+                      setFeedbackForm({ ...feedbackForm, title: e.target.value })
+                    }
+                    required
+                    disabled={loading}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Message</label>
+                  <textarea
+                    placeholder="Enter your feedback..."
+                    value={feedbackForm.message}
+                    onChange={(e) =>
+                      setFeedbackForm({ ...feedbackForm, message: e.target.value })
+                    }
+                    required
+                    disabled={loading}
+                    rows="5"
+                  />
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Category</label>
+                    <select
+                      value={feedbackForm.category}
+                      onChange={(e) =>
+                        setFeedbackForm({ ...feedbackForm, category: e.target.value })
+                      }
+                      disabled={loading}
+                    >
+                      <option value="General">General</option>
+                      <option value="Attendance">Attendance</option>
+                      <option value="Academic">Academic</option>
+                      <option value="Behavior">Behavior</option>
+                      <option value="Improvement">Improvement</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Priority</label>
+                    <select
+                      value={feedbackForm.priority}
+                      onChange={(e) =>
+                        setFeedbackForm({ ...feedbackForm, priority: e.target.value })
+                      }
+                      disabled={loading}
+                    >
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="modal-actions">
+                  <button type="submit" className="btn btn-primary" disabled={loading}>
+                    {loading ? "Sending..." : "Send Feedback"}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setFeedbackStudent(null)}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
         <div className="students-grid">
           {filtered.length > 0 ? (
             filtered.map((student) => (
@@ -262,6 +410,12 @@ export default function FacultyDashboard() {
                     onClick={() => startEditing(student)}
                   >
                     Update Marks
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => startFeedback(student)}
+                  >
+                    Give Feedback
                   </button>
                 </div>
               </div>

@@ -82,3 +82,38 @@ exports.deleteFaculty = async (req, res) => {
     res.status(500).json({ message: "Error deleting faculty", error: error.message });
   }
 };
+
+// OAuth callback handler
+exports.oauthCallback = async (req, res) => {
+  try {
+    console.log("OAuth callback reached");
+    console.log("User from req.user:", req.user);
+    console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
+    
+    if (!req.user) {
+      console.log("No user found, redirecting to login with error");
+      return res.redirect(`${process.env.FRONTEND_URL}/login?error=authentication_failed`);
+    }
+
+    const user = req.user;
+    
+    // Create user data object
+    const userData = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    };
+
+    console.log("User data to send:", userData);
+    
+    // Redirect to frontend with user data
+    const userDataEncoded = encodeURIComponent(JSON.stringify(userData));
+    const redirectUrl = `${process.env.FRONTEND_URL}/oauth-callback?user=${userDataEncoded}`;
+    console.log("Redirecting to:", redirectUrl);
+    res.redirect(redirectUrl);
+  } catch (error) {
+    console.error("OAuth callback error:", error);
+    res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);
+  }
+};

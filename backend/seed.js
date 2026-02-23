@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const Student = require("./models/Student");
 const RiskSettings = require("./models/RiskSettings");
+const Feedback = require("./models/Feedback");
 require("dotenv").config();
 
 const seedDatabase = async () => {
@@ -13,6 +14,7 @@ const seedDatabase = async () => {
     await User.deleteMany({});
     await Student.deleteMany({});
     await RiskSettings.deleteMany({});
+    await Feedback.deleteMany({});
 
     // Create demo users
     const admin = await User.create({
@@ -99,11 +101,48 @@ const seedDatabase = async () => {
       mediumRiskMin: 70
     });
 
+    // Create sample feedback
+    const feedbackData = [
+      {
+        studentId: students[0]._id,
+        studentEmail: "john.doe@email.com",
+        facultyId: faculty._id,
+        facultyName: "Faculty Member",
+        title: "Great Performance",
+        message: "You are doing excellent work in your coursework. Keep up the good performance!",
+        category: "Academic",
+        priority: "Low"
+      },
+      {
+        studentId: students[1]._id,
+        studentEmail: "jane.smith@email.com",
+        facultyId: faculty._id,
+        facultyName: "Faculty Member",
+        title: "Attendance Notice",
+        message: "Please try to improve your attendance. Regular class participation is important for your academic growth.",
+        category: "Attendance",
+        priority: "High"
+      },
+      {
+        studentId: students[2]._id,
+        studentEmail: "bob.johnson@email.com",
+        facultyId: faculty._id,
+        facultyName: "Faculty Member",
+        title: "Study Recommendations",
+        message: "Consider implementing a stronger study routine. Meeting with me during office hours could help improve your understanding.",
+        category: "Improvement",
+        priority: "High"
+      }
+    ];
+
+    await Feedback.insertMany(feedbackData);
+
     console.log("✓ Admin user created: admin@email.com / password");
     console.log("✓ Faculty user created: faculty@email.com / password");
     console.log("✓ Student user created: student@email.com / password");
     console.log(`✓ ${students.length} demo students created`);
     console.log("✓ Risk settings initialized");
+    console.log("✓ Sample feedback created");
 
     await mongoose.disconnect();
     console.log("Database seeding completed successfully!");

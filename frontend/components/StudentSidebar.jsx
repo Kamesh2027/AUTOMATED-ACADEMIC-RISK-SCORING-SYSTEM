@@ -4,7 +4,8 @@ export const StudentSidebar = ({ activeSection, onSectionChange }) => {
   const sections = [
     { id: "profileInfo", label: "Profile Information" },
     { id: "dashboard", label: "Your risk level" },
-    { id: "analytics", label: "Analytics" }
+    { id: "analytics", label: "Analytics" },
+    { id: "feedback", label: "Feedback" }
   ];
 
   return (

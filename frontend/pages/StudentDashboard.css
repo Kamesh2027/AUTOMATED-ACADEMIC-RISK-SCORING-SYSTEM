@@ -301,6 +301,235 @@
   box-shadow: 0 8px 20px rgba(101, 178, 191, 0.4);
 }
 
+.feedback-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e8e8e8;
+  padding-bottom: 1rem;
+}
+
+.feedback-header h2 {
+  color: #333;
+  font-size: 24px;
+  margin: 0;
+}
+
+.feedback-count {
+  background: linear-gradient(135deg, #65b2bf 0%, #54a1ad 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.feedback-card {
+  background: #f9f9f9;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  border-left: 4px solid #95a5a6;
+}
+
+.feedback-card.unread {
+  background: #f0f8ff;
+  border-left-color: #65b2bf;
+  box-shadow: 0 2px 8px rgba(101, 178, 191, 0.15);
+}
+
+.feedback-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.feedback-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1.5rem;
+}
+
+.feedback-info {
+  flex: 1;
+}
+
+.feedback-info h3 {
+  color: #333;
+  font-size: 18px;
+  margin: 0 0 0.5rem 0;
+}
+
+.faculty-name {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.feedback-badges {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.badge-category,
+.badge-priority,
+.badge-unread {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-general {
+  background-color: #e8eef7;
+  color: #667eea;
+}
+
+.badge-attendance {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.badge-academic {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.badge-behavior {
+  background-color: #fce4ec;
+  color: #c2185b;
+}
+
+.badge-improvement {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.badge-priority-low {
+  background-color: #c8e6c9;
+  color: #1b5e20;
+}
+
+.badge-priority-medium {
+  background-color: #ffe0b2;
+  color: #e65100;
+}
+
+.badge-priority-high {
+  background-color: #ffcdd2;
+  color: #b71c1c;
+}
+
+.badge-unread {
+  background-color: #65b2bf;
+  color: white;
+}
+
+.feedback-message {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid #65b2bf;
+}
+
+.feedback-message p {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 15px;
+}
+
+.feedback-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.feedback-date {
+  color: #999;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.feedback-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-small {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-read {
+  background-color: #65b2bf;
+  color: white;
+}
+
+.btn-read:hover {
+  background-color: #54a1ad;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(101, 178, 191, 0.3);
+}
+
+.btn-delete {
+  background-color: #e0e0e0;
+  color: #666;
+}
+
+.btn-delete:hover {
+  background-color: #d0d0d0;
+  transform: translateY(-1px);
+}
+
+.no-feedback {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #999;
+}
+
+.no-feedback p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.loading-text {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 14px;
+}
+
 @media (max-width: 768px) {
   .dashboard-container {
     margin-left: 0;

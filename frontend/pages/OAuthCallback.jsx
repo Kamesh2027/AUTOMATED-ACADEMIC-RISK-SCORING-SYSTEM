@@ -1,21 +1,25 @@
-import { useEffect, useContext } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
 
 const OAuthCallback = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  const [searchParams] = useSearchParams();
+  const processedRef = useRef(false);
 
   useEffect(() => {
+    // Prevent double processing
+    if (processedRef.current) return;
+    processedRef.current = true;
+
     console.log("OAuthCallback mounted");
     console.log("Current URL:", window.location.href);
-    console.log("Search params:", window.location.search);
     
-    // Get user data from URL params
-    const userParam = searchParams.get("user");
-    const error = searchParams.get("error");
+    // Get params directly from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const userParam = urlParams.get("user");
+    const error = urlParams.get("error");
 
     console.log("User param:", userParam);
     console.log("Error param:", error);
@@ -32,23 +36,29 @@ const OAuthCallback = () => {
         console.log("Parsed user data:", userData);
         login(userData);
 
-        // Small delay to ensure state is updated
+        console.log("Navigating to dashboard for role:", userData.role);
+        
+        // Navigate based on user's assigned role
         setTimeout(() => {
-          // Navigate based on user's assigned role
-          if (userData.role === "admin") navigate("/admin", { replace: true });
-          else if (userData.role === "faculty") navigate("/faculty", { replace: true });
-          else if (userData.role === "student") navigate("/student", { replace: true });
-          else navigate("/", { replace: true });
-        }, 500);
-      } catch (error) {
-        console.error("Error parsing user data:", error);
+          if (userData.role === "admin") {
+            navigate("/admin", { replace: true });
+          } else if (userData.role === "faculty") {
+            navigate("/faculty", { replace: true });
+          } else if (userData.role === "student") {
+            navigate("/student", { replace: true });
+          } else {
+            navigate("/", { replace: true });
+          }
+        }, 100);
+      } catch (err) {
+        console.error("Error parsing user data:", err);
         navigate("/login?error=invalid_response", { replace: true });
       }
     } else {
       console.log("No user data found, redirecting to login");
       navigate("/login?error=no_user_data", { replace: true });
     }
-  }, []); // Empty deps - only run once on mount
+  }, [navigate, login]);
 
   return (
     <div style={{

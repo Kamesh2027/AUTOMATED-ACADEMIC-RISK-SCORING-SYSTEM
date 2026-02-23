@@ -16,8 +16,16 @@ services:
         sync: false
       - key: JWT_SECRET
         generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
       - key: FRONTEND_URL
         value: https://aarss-frontend.onrender.com
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CALLBACK_URL
+        value: https://aarss-backend.onrender.com/api/auth/google/callback
 
   # Frontend React App
   - type: web

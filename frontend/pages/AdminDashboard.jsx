@@ -58,6 +58,8 @@ export default function AdminDashboard() {
   const [emailError, setEmailError] = useState("");
   const [regNoError, setRegNoError] = useState("");
   const [facultyEmailError, setFacultyEmailError] = useState("");
+  const [studentSearch, setStudentSearch] = useState("");
+  const [facultySearch, setFacultySearch] = useState("");
 
   useEffect(() => {
     fetchStudents();
@@ -447,6 +449,15 @@ export default function AdminDashboard() {
         {activeSection === "studentList" && (
           <div className="section-content">
             <h2>Student List</h2>
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search by name, email, or registration number..."
+                value={studentSearch}
+                onChange={(e) => setStudentSearch(e.target.value)}
+                className="search-input"
+              />
+            </div>
             <div className="table-container">
               <table className="table">
                 <thead>
@@ -463,7 +474,13 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {students.map((student) => (
+                  {students
+                    .filter((student) =>
+                      student.name.toLowerCase().includes(studentSearch.toLowerCase()) ||
+                      student.email.toLowerCase().includes(studentSearch.toLowerCase()) ||
+                      student.regNo.toLowerCase().includes(studentSearch.toLowerCase())
+                    )
+                    .map((student) => (
                     <tr key={student._id}>
                       <td>{student.name}</td>
                       <td>{student.email}</td>
@@ -496,6 +513,15 @@ export default function AdminDashboard() {
         {activeSection === "facultyList" && (
           <div className="section-content">
             <h2>Faculty List</h2>
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search by name or email..."
+                value={facultySearch}
+                onChange={(e) => setFacultySearch(e.target.value)}
+                className="search-input"
+              />
+            </div>
             <div className="table-container">
               <table className="table">
                 <thead>
@@ -506,7 +532,12 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {faculty.map((f) => (
+                  {faculty
+                    .filter((f) =>
+                      f.name.toLowerCase().includes(facultySearch.toLowerCase()) ||
+                      f.email.toLowerCase().includes(facultySearch.toLowerCase())
+                    )
+                    .map((f) => (
                     <tr key={f._id}>
                       <td>{f.name}</td>
                       <td>{f.email}</td>

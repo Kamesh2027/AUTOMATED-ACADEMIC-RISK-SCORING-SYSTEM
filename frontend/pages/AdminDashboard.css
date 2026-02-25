@@ -171,6 +171,32 @@
   border-left: 4px solid #2196f3;
 }
 
+.search-bar {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #65b2bf;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Segoe UI", sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
 .table-container {
   overflow-x: auto;
   margin-top: 1.5rem;

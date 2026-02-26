@@ -20,11 +20,6 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "faculty", "student"],
     required: true
   },
-  googleId: {
-    type: String,
-    unique: true,
-    sparse: true
-  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -1,12 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const session = require("express-session");
 
-// Load environment variables BEFORE importing passport
 dotenv.config();
 
-const passport = require("./config/passport");
 const connectDB = require("./config/db");
 
 connectDB();
@@ -38,23 +35,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-
-// Session configuration
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "your-secret-key-change-in-production",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
-  })
-);
-
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
 
 console.log("Registering routes...");
 

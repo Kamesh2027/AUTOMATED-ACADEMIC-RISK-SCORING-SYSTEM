@@ -9,7 +9,7 @@ import { API_BASE_URL } from "../config";
 
 export default function FacultyDashboard() {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext); 
 
   const [students, setStudents] = useState([]);
   const [filter, setFilter] = useState("All");
@@ -196,12 +196,12 @@ export default function FacultyDashboard() {
             <div className="modal">
               <div className="modal-header">
                 <h2>Update Marks - {editingStudent.name}</h2>
-                <button
+                {/* <button
                   className="close-btn"
                   onClick={() => setEditingStudent(null)}
                 >
                   ×
-                </button>
+                </button> */}
               </div>
 
               <form onSubmit={handleUpdateMarks} className="form">
@@ -248,9 +248,6 @@ export default function FacultyDashboard() {
                 </div>
 
                 <div className="modal-actions">
-                  <button type="submit" className="btn btn-primary" disabled={loading}>
-                    {loading ? "Updating..." : "Update Marks"}
-                  </button>
                   <button
                     type="button"
                     className="btn btn-secondary"
@@ -258,6 +255,9 @@ export default function FacultyDashboard() {
                     disabled={loading}
                   >
                     Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary" disabled={loading}>
+                    {loading ? "Updating..." : "Update Marks"}
                   </button>
                 </div>
               </form>
@@ -270,12 +270,12 @@ export default function FacultyDashboard() {
             <div className="modal">
               <div className="modal-header">
                 <h2>Give Feedback - {feedbackStudent.name}</h2>
-                <button
+                {/* <button
                   className="close-btn"
                   onClick={() => setFeedbackStudent(null)}
                 >
                   ×
-                </button>
+                </button> */}
               </div>
 
               <form onSubmit={handleSubmitFeedback} className="form">
@@ -342,9 +342,6 @@ export default function FacultyDashboard() {
                 </div>
 
                 <div className="modal-actions">
-                  <button type="submit" className="btn btn-primary" disabled={loading}>
-                    {loading ? "Sending..." : "Send Feedback"}
-                  </button>
                   <button
                     type="button"
                     className="btn btn-secondary"
@@ -352,6 +349,9 @@ export default function FacultyDashboard() {
                     disabled={loading}
                   >
                     Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary" disabled={loading}>
+                    {loading ? "Sending..." : "Send Feedback"}
                   </button>
                 </div>
               </form>

@@ -61,11 +61,23 @@ export default function AdminDashboard() {
   const [studentSearch, setStudentSearch] = useState("");
   const [facultySearch, setFacultySearch] = useState("");
 
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editStudent, setEditStudent] = useState(null);
+  const [editFacultyModalOpen, setEditFacultyModalOpen] = useState(false);
+  const [editFaculty, setEditFaculty] = useState(null);
+
   useEffect(() => {
     fetchStudents();
     fetchFaculty();
     fetchRiskSettings();
   }, []);
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => setSuccessMessage(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   const fetchStudents = async () => {
     try {
@@ -354,10 +366,272 @@ export default function AdminDashboard() {
     navigate("/");
   };
 
+  const openEditStudentModal = (student) => {
+    setEditStudent({ ...student, password: "" });
+    setEditModalOpen(true);
+  };
+
+  const closeEditStudentModal = () => {
+    setEditModalOpen(false);
+    setEditStudent(null);
+  };
+
+  const handleEditStudentChange = (field, value) => {
+    setEditStudent(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveEditStudent = async () => {
+    if (!editStudent) return;
+    try {
+      const body = {
+        name: editStudent.name,
+        email: editStudent.email,
+        regNo: editStudent.regNo
+      };
+      if (editStudent.password) body.password = editStudent.password;
+      const response = await fetch(`${API_BASE_URL}/students/${editStudent._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      if (response.ok) {
+        // Refetch students from the backend to ensure DB is updated and UI is in sync
+        await fetchStudents();
+        closeEditStudentModal();
+      } else {
+        const data = await response.json();
+        alert(data.message || "Failed to update student");
+      }
+    } catch (err) {
+      alert("Error updating student: " + err.message);
+    }
+  };
+
+  const openEditFacultyModal = (faculty) => {
+    setEditFaculty({ ...faculty, password: "" });
+    setEditFacultyModalOpen(true);
+  };
+
+  const closeEditFacultyModal = () => {
+    setEditFacultyModalOpen(false);
+    setEditFaculty(null);
+  };
+
+  const handleEditFacultyChange = (field, value) => {
+    setEditFaculty(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveEditFaculty = async () => {
+    if (!editFaculty) return;
+    try {
+      const body = {
+        name: editFaculty.name,
+        email: editFaculty.email
+      };
+      if (editFaculty.password) body.password = editFaculty.password;
+      const response = await fetch(`${API_BASE_URL}/auth/faculty/${editFaculty._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      if (response.ok) {
+        await fetchFaculty();
+        closeEditFacultyModal();
+      } else {
+        const data = await response.json();
+        alert(data.message || "Failed to update faculty");
+      }
+    } catch (err) {
+      alert("Error updating faculty: " + err.message);
+    }
+  };
+
+  {editModalOpen && editStudent && (
+    <div className="modal-overlay">
+      <div className="modal edit-modal">
+        <div className="modal-header">
+          <h2>Edit Student</h2>
+          <button className="close-btn" onClick={closeEditStudentModal}>×</button>
+        </div>
+        <form className="form" onSubmit={e => { e.preventDefault(); handleSaveEditStudent(); }}>
+          <div className="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              value={editStudent.name}
+              onChange={e => handleEditStudentChange('name', e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={editStudent.email}
+              onChange={e => handleEditStudentChange('email', e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Registration Number</label>
+            <input
+              type="text"
+              value={editStudent.regNo}
+              onChange={e => handleEditStudentChange('regNo', e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              value={editStudent.password}
+              onChange={e => handleEditStudentChange('password', e.target.value)}
+              placeholder="Leave blank to keep unchanged"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  )}
+
+  {editFacultyModalOpen && editFaculty && (
+    <div className="modal-overlay">
+      <div className="modal edit-modal">
+        <div className="modal-header">
+          <h2>Edit Faculty</h2>
+          <button className="close-btn" onClick={closeEditFacultyModal}>×</button>
+        </div>
+        <form className="form" onSubmit={e => { e.preventDefault(); handleSaveEditFaculty(); }}>
+          <div className="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              value={editFaculty.name}
+              onChange={e => handleEditFacultyChange('name', e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={editFaculty.email}
+              onChange={e => handleEditFacultyChange('email', e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              value={editFaculty.password}
+              onChange={e => handleEditFacultyChange('password', e.target.value)}
+              placeholder="Leave blank to keep unchanged"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  )}
+
   return (
     <div className="admin-dashboard">
       <Navbar user={user} onLogout={handleLogout} />
       <AdminSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+
+      {editModalOpen && editStudent && (
+        <div className="modal-overlay">
+          <div className="modal edit-modal">
+            <div className="modal-header">
+              <h2>Edit Student</h2>
+              <button className="close-btn" onClick={closeEditStudentModal}>×</button>
+            </div>
+            <form className="form" onSubmit={e => { e.preventDefault(); handleSaveEditStudent(); }}>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  value={editStudent.name}
+                  onChange={e => handleEditStudentChange('name', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={editStudent.email}
+                  onChange={e => handleEditStudentChange('email', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Registration Number</label>
+                <input
+                  type="text"
+                  value={editStudent.regNo}
+                  onChange={e => handleEditStudentChange('regNo', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  value={editStudent.password}
+                  onChange={e => handleEditStudentChange('password', e.target.value)}
+                  placeholder="Leave blank to keep unchanged"
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {editFacultyModalOpen && editFaculty && (
+        <div className="modal-overlay">
+          <div className="modal edit-modal">
+            <div className="modal-header">
+              <h2>Edit Faculty</h2>
+              <button className="close-btn" onClick={closeEditFacultyModal}>×</button>
+            </div>
+            <form className="form" onSubmit={e => { e.preventDefault(); handleSaveEditFaculty(); }}>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  value={editFaculty.name}
+                  onChange={e => handleEditFacultyChange('name', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={editFaculty.email}
+                  onChange={e => handleEditFacultyChange('email', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  value={editFaculty.password}
+                  onChange={e => handleEditFacultyChange('password', e.target.value)}
+                  placeholder="Leave blank to keep unchanged"
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      )}
 
       <div className="dashboard-container">
         {error && <div className="alert alert-error">{error}</div>}
@@ -449,7 +723,12 @@ export default function AdminDashboard() {
         {activeSection === "studentList" && (
           <div className="section-content">
             <h2>Student List</h2>
-            <div className="search-bar">
+            
+            {students.length === 0 ? (
+              <div className="no-data-message">No students found.</div>
+            ) : (
+            <>
+              <div className="search-bar">
               <input
                 type="text"
                 placeholder="Search by name, email, or registration number..."
@@ -458,62 +737,78 @@ export default function AdminDashboard() {
                 className="search-input"
               />
             </div>
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Reg No</th>
-                    <th>Attendance</th>
-                    <th>Marks</th>
-                    <th>Assignments</th>
-                    <th>Score</th>
-                    <th>Risk Level</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {students
-                    .filter((student) =>
-                      student.name.toLowerCase().includes(studentSearch.toLowerCase()) ||
-                      student.email.toLowerCase().includes(studentSearch.toLowerCase()) ||
-                      student.regNo.toLowerCase().includes(studentSearch.toLowerCase())
-                    )
-                    .map((student) => (
-                    <tr key={student._id}>
-                      <td>{student.name}</td>
-                      <td>{student.email}</td>
-                      <td>{student.regNo}</td>
-                      <td>{student.attendance}</td>
-                      <td>{student.marks}</td>
-                      <td>{student.assignments}</td>
-                      <td>{student.score}</td>
-                      <td>
-                        <span className={`badge badge-${student.riskLevel.toLowerCase()}`}>
-                          {student.riskLevel}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleDeleteStudent(student._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
+              <div className="table-container">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Reg No</th>
+                      <th>Attendance</th>
+                      <th>Marks</th>
+                      <th>Assignments</th>
+                      <th>Score</th>
+                      <th>Risk Level</th>
+                      <th>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {students
+                      .filter((student) =>
+                        student.name.toLowerCase().includes(studentSearch.toLowerCase()) ||
+                        student.email.toLowerCase().includes(studentSearch.toLowerCase()) ||
+                        student.regNo.toLowerCase().includes(studentSearch.toLowerCase())
+                      )
+                      .map((student) => (
+                        <tr key={student._id}>
+                          <td>{student.name}</td>
+                          <td>{student.email}</td>
+                          <td>{student.regNo}</td>
+                          <td>{student.attendance}</td>
+                          <td>{student.marks}</td>
+                          <td>{student.assignments}</td>
+                          <td>{student.score}</td>
+                          <td>
+                            <span className={`badge badge-${student.riskLevel.toLowerCase()}`}>
+                              {student.riskLevel}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="action-cell">
+                              <div className="action-buttons">
+                                <button
+                                  className="btn btn-edit btn-sm"
+                                  onClick={() => openEditStudentModal(student)}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  onClick={() => handleDeleteStudent(student._id)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+            )}
           </div>
         )}
 
         {activeSection === "facultyList" && (
           <div className="section-content">
             <h2>Faculty List</h2>
-            <div className="search-bar">
+            {faculty.length === 0 ? (
+              <div className="no-data-message">No faculty found.</div>
+            ) : (
+              <>
+              <div className="search-bar">
               <input
                 type="text"
                 placeholder="Search by name or email..."
@@ -522,38 +817,48 @@ export default function AdminDashboard() {
                 className="search-input"
               />
             </div>
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {faculty
-                    .filter((f) =>
-                      f.name.toLowerCase().includes(facultySearch.toLowerCase()) ||
-                      f.email.toLowerCase().includes(facultySearch.toLowerCase())
-                    )
-                    .map((f) => (
-                    <tr key={f._id}>
-                      <td>{f.name}</td>
-                      <td>{f.email}</td>
-                      <td>
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleDeleteFaculty(f._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
+              <div className="table-container">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {faculty
+                      .filter((f) =>
+                        f.name.toLowerCase().includes(facultySearch.toLowerCase()) ||
+                        f.email.toLowerCase().includes(facultySearch.toLowerCase())
+                      )
+                      .map((f) => (
+                        <tr key={f._id}>
+                          <td>{f.name}</td>
+                          <td>{f.email}</td>
+                          <td>
+                            <div className="action-button">
+                              <button
+                                className="btn btn-edit btn-sm"
+                                onClick={() => openEditFacultyModal(f)}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="btn btn-danger btn-sm"
+                                onClick={() => handleDeleteFaculty(f._id)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+            )}
           </div>
         )}
 
@@ -650,7 +955,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <button type="submit" className="addstd btn btn-primary" disabled={loading}>
+              <button type="submit" className="btn btn-primary" disabled={loading}>
                 {loading ? "Adding..." : "Add Student"}
               </button>
             </form>
@@ -666,6 +971,7 @@ export default function AdminDashboard() {
                 <label>Full Name</label>
                 <input
                   type="text"
+                  placeholder="Enter name"
                   required
                   value={facultyForm.name}
                   onChange={(e) =>
@@ -679,6 +985,7 @@ export default function AdminDashboard() {
                 <label>Email</label>
                 <input
                   type="email"
+                  placeholder="Enter mail id"
                   required
                   value={facultyForm.email}
                   onChange={(e) =>
@@ -694,6 +1001,7 @@ export default function AdminDashboard() {
                 <label>Password</label>
                 <input
                   type="password"
+                  placeholder="Enter Password"
                   required
                   value={facultyForm.password}
                   onChange={(e) =>

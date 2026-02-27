@@ -73,6 +73,7 @@ exports.getFaculty = async (req, res) => {
 exports.deleteFaculty = async (req, res) => {
   try {
     const { id } = req.params;
+    // Remove by id only
     const faculty = await User.findOneAndDelete({ _id: id, role: "faculty" });
     if (!faculty) {
       return res.status(404).json({ message: "Faculty member not found" });
@@ -80,5 +81,27 @@ exports.deleteFaculty = async (req, res) => {
     res.json({ message: "Faculty member deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting faculty", error: error.message });
+  }
+};
+
+// allow admin to update a faculty member by id
+exports.updateFaculty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+    // Find faculty by id (not by email)
+    const faculty = await User.findOne({ _id: id, role: "faculty" });
+    if (!faculty) {
+      return res.status(404).json({ message: "Faculty member not found" });
+    }
+    // Store old email for delete
+    const oldEmail = faculty.email;
+    if (name !== undefined) faculty.name = name;
+    if (email !== undefined) faculty.email = email;
+    if (password) faculty.password = password;
+    await faculty.save();
+    res.json({ message: "Faculty member updated successfully", faculty });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating faculty", error: error.message });
   }
 };

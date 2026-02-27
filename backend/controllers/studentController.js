@@ -1,5 +1,6 @@
 const Student = require("../models/Student");
 const User = require("../models/User");
+const Feedback = require("../models/Feedback"); // Add Feedback model
 const { calculateRisk } = require("../utils/riskCalculator");
 
 exports.getStudents = async (req, res) => {
@@ -149,17 +150,50 @@ exports.updateMarks = async (req, res) => {
   }
 };
 
-exports.deleteStudent = async (req, res) => {
+exports.updateStudent = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const student = await Student.findByIdAndDelete(id);
-
+    const { name, email, regNo, password } = req.body;
+    if (!id) {
+      return res.status(400).json({ message: "Student ID is required" });
+    }
+    const student = await Student.findById(id);
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
+    // Store old email for user lookup
+    const oldEmail = student.email;
+    // Update student fields
+    if (name !== undefined) student.name = name;
+    if (email !== undefined) student.email = email;
+    if (regNo !== undefined) student.regNo = regNo;
+    await student.save();
+    // Also update User if email or name changed
+    const user = await User.findOne({ email: oldEmail });
+    if (user) {
+      if (name !== undefined) user.name = name;
+      if (email !== undefined) user.email = email;
+      if (password) user.password = password;
+      await user.save();
+    }
+    res.json(student);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating student", error: error.message });
+  }
+};
 
-    res.json({ message: "Student deleted successfully" });
+exports.deleteStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findByIdAndDelete(id);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    // Remove all feedbacks related to this student
+    await Feedback.deleteMany({ studentId: id });
+    // Remove user account if exists (if students are also users)
+    await User.deleteOne({ email: student.email, role: "student" });
+    res.json({ message: "Student and related data deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting student", error: error.message });
   }

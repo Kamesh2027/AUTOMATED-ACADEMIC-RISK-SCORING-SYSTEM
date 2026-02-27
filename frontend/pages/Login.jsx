@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { API_BASE_URL } from "../config";
+import "./Login.css";
 
 //const API_BASE_URL = "http://localhost:5000/api";
 
@@ -58,119 +59,53 @@ const Login = () => {
   console.log("Login component rendering");
 
   return (
-    <div style={{
-      padding: "40px 20px",
-      display: "flex",
-      justifyContent: "center", 
-      alignItems: "center",
-      minHeight: "100vh",
-      backgroundColor: "#bbeeeb"
-    }}>
-      <div style={{
-        backgroundColor: "white",
-        padding: "40px",
-        borderRadius: "12px",
-        boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-        maxWidth: "400px",
-        width: "100%"
-      }}>
-        <h1 style={{ textAlign: "center", marginBottom: "10px", color: "#65b2bf" }}>AARSS</h1>
-        <p style={{ textAlign: "center", marginBottom: "30px", color: "#565353" }}>Academic Portal</p>
+    <div className="login-page">
+      <div className="login-card glass-card float-in">
+        <div className="login-brand">
+          <h1 className="login-title">AARSS Portal</h1>
+        </div>
 
         {error && (
-          <div style={{
-            backgroundColor: "#fee",
-            color: "#c00",
-            padding: "12px",
-            borderRadius: "6px",
-            marginBottom: "20px",
-            border: "1px solid #fcc"
-          }}>
+          <div className="login-error">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleLogin}>
-          <div style={{ marginBottom: "20px" }}>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold", color: "#333" }}>
-              Email:
-            </label>
+        <form className="login-form" onSubmit={handleLogin}>
+          <div className="login-field">
+            <label className="login-label">Email</label>
             <input
+              className="login-input"
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
-              placeholder="your@email.com"
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "6px",
-                border: "1px solid #ddd",
-                fontSize: "14px",
-                boxSizing: "border-box"
-              }}
+              placeholder="Enter your email"
             />
           </div>
 
-          <div style={{ marginBottom: "25px" }}> 
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold", color: "#333" }}>
-              Password:
-            </label>
+          <div className="login-field">
+            <label className="login-label">Password</label>
             <input
+              className="login-input"
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
               placeholder="Enter your password"
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "6px",
-                border: "1px solid #ddd",
-                fontSize: "14px",
-                boxSizing: "border-box"
-              }}
             />
           </div>
 
           <button
+            className="login-button"
             type="submit"
             disabled={loading}
-            style={{
-              width: "100%",
-              padding: "12px",
-              backgroundColor: "#65b2bf",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: loading ? "not-allowed" : "pointer",
-              opacity: loading ? 0.8 : 1,
-              marginBottom: "15px"
-            }}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
-        {/* <div style={{
-          marginTop: "30px",
-          paddingTop: "20px",
-          borderTop: "1px solid #eee",
-          backgroundColor: "#f9f9f9",
-          padding: "15px",
-          borderRadius: "6px"
-        }}> 
-          <p style={{ fontWeight: "bold", marginBottom: "12px", color: "#333", textAlign: "center" }}>Demo Credentials:</p>
-          <div style={{ fontSize: "13px", color: "#555", lineHeight: "1.8" }}>
-            <p><strong>Admin:</strong> admin@email.com / password</p>
-            <p><strong>Faculty:</strong> faculty@email.com / password</p>
-            <p><strong>Student:</strong> student@email.com / password</p>
-          </div>
-        </div> */}
       </div>
     </div>
   );

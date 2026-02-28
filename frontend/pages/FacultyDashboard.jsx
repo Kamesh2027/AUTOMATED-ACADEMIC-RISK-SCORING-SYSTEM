@@ -196,12 +196,6 @@ export default function FacultyDashboard() {
             <div className="modal">
               <div className="modal-header">
                 <h2>Update Marks - {editingStudent.name}</h2>
-                {/* <button
-                  className="close-btn"
-                  onClick={() => setEditingStudent(null)}
-                >
-                  ×
-                </button> */}
               </div>
 
               <form onSubmit={handleUpdateMarks} className="form">
@@ -270,12 +264,6 @@ export default function FacultyDashboard() {
             <div className="modal">
               <div className="modal-header">
                 <h2>Give Feedback - {feedbackStudent.name}</h2>
-                {/* <button
-                  className="close-btn"
-                  onClick={() => setFeedbackStudent(null)}
-                >
-                  ×
-                </button> */}
               </div>
 
               <form onSubmit={handleSubmitFeedback} className="form">

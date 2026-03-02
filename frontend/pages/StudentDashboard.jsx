@@ -5,7 +5,6 @@ import { Navbar } from "../components/Navbar";
 import { StudentSidebar } from "../components/StudentSidebar";
 import "./StudentDashboard.css";
 import { API_BASE_URL } from "../config";
-
 //const API_BASE_URL = "http://localhost:5000/api";
 
 export default function StudentDashboard() {

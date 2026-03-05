@@ -62,7 +62,7 @@
 }
 
 .login-title {
-  font-family: var(--font-serif);
+  font-family: 'Noto Sans', 'PT Serif', 'Playfair Display', serif !important;
   font-size: 38px;
   margin: 0.5rem 0 0.6rem;
   color: var(--accent);

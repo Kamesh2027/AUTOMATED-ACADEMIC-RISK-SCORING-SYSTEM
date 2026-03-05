@@ -17,6 +17,9 @@ exports.getStudents = async (req, res) => {
 
         s.score = score;
         s.riskLevel = riskLevel;
+        // Automated risk alert logic
+        const riskThreshold = 70;
+        s.riskAlert = score < riskThreshold;
         await s.save();
 
         return s;
@@ -46,6 +49,9 @@ exports.getStudentByEmail = async (req, res) => {
 
     student.score = score;
     student.riskLevel = riskLevel;
+    // Automated risk alert logic
+    const riskThreshold = 70;
+    student.riskAlert = score < riskThreshold;
     await student.save();
 
     res.json(student);
@@ -167,6 +173,41 @@ exports.updateStudent = async (req, res) => {
     if (name !== undefined) student.name = name;
     if (email !== undefined) student.email = email;
     if (regNo !== undefined) student.regNo = regNo;
+    let marksChanged = false;
+    if (req.body.marks !== undefined) {
+      student.marks = req.body.marks;
+      marksChanged = true;
+    }
+    if (req.body.attendance !== undefined) {
+      student.attendance = req.body.attendance;
+      marksChanged = true;
+    }
+    if (req.body.assignments !== undefined) {
+      student.assignments = req.body.assignments;
+      marksChanged = true;
+    }
+    // If marks/attendance/assignments changed, recalculate score/risk
+    let riskLevelChangedToHigh = false;
+    if (marksChanged) {
+      const prevRiskLevel = student.riskLevel;
+      const { score, riskLevel } = await calculateRisk(
+        student.attendance,
+        student.marks,
+        student.assignments
+      );
+      student.score = score;
+      student.riskLevel = riskLevel;
+      const riskThreshold = 70;
+      student.riskAlert = score < riskThreshold;
+      // If risk level changed to High, create notification
+      if (prevRiskLevel !== "High" && riskLevel === "High") {
+        await Notification.create({
+          studentId: student._id,
+          message: "Your risk level is now HIGH. Please contact your faculty for support.",
+        });
+        riskLevelChangedToHigh = true;
+      }
+    }
     await student.save();
     // Also update User if email or name changed
     const user = await User.findOne({ email: oldEmail });

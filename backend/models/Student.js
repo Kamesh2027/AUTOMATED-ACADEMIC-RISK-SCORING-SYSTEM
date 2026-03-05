@@ -58,6 +58,11 @@ const studentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+  ,
+  riskAlert: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = mongoose.model("Student", studentSchema);

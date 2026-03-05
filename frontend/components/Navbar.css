@@ -86,9 +86,7 @@
   }
 
   .navbar-brand {
-    width: 100%;
-    font-family: var(--font-sans);
-  }
+    width: 100%;  }
 
   .navbar-user {
     width: 100%;

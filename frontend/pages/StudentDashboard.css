@@ -2,7 +2,6 @@
   margin-top: 70px;
   background-color: #e2ebea;
   min-height: 100vh;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .dashboard-container {
@@ -63,7 +62,8 @@
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 50%;
+  max-width: 400px;
+  height: 350px;
 }
 
 .risk-header {
@@ -80,10 +80,11 @@
 }
 
 .risk-display {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin-bottom: 2rem;
+  justify-content: space-around;
 }
 
 .risk-badge {
@@ -95,6 +96,8 @@
   color: white;
   font-size: 16px;
   font-weight: 700;
+  width: 90px;
+  height: 90px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -107,6 +110,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 90px;
+  height: 90px;
 }
 
 .score-label {
@@ -142,6 +147,7 @@
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 60%;
 }
 
 .metrics-section h2 {
@@ -153,12 +159,12 @@
 
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1.5rem;
 }
 
 .metric-card {
-  background: linear-gradient(135deg, #65b2bf 0%, #54a1ad 100%);
+  background: linear-gradient(135deg, var(--accent) 100%);
   border-radius: 12px;
   padding: 1.5rem;
   color: white;

@@ -53,6 +53,8 @@ console.log("✓ Risk routes registered");
 
 app.use("/api/feedback", require("./routes/feedbackRoutes"));
 console.log("✓ Feedback routes registered");
+
+console.log("✓ Notification routes registered");
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);

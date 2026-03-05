@@ -46,7 +46,6 @@
   color: #222;
   margin-bottom: 1.5rem;
   font-size: 32px;
-  font-family: var(--font-sans);
   font-weight: 800;
 }
 
@@ -54,7 +53,6 @@
   color: var(--primary);
   margin-top: 2rem;
   margin-bottom: 1rem;
-  font-family: var(--font-sans);
   font-weight: 700;
 }
 
@@ -169,7 +167,6 @@
   border: 2px solid #65b2bf;
   border-radius: 8px;
   font-size: 14px;
-  font-family: "Segoe UI", sans-serif;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 

@@ -5,7 +5,6 @@ import { Navbar } from "../components/Navbar";
 import { StudentSidebar } from "../components/StudentSidebar";
 import "./StudentDashboard.css";
 import { API_BASE_URL } from "../config";
-//const API_BASE_URL = "http://localhost:5000/api";
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -161,6 +160,12 @@ export default function StudentDashboard() {
       <StudentSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
       <div className="dashboard-container">
+        {/* Automated Risk Alert Notification */}
+        {student.riskAlert && (
+          <div className="alert alert-warning" style={{marginBottom: '1rem'}}>
+            <strong>Risk Alert:</strong> Your risk score is below the safe threshold. Please contact your faculty for support.
+          </div>
+        )}
         <div className="header">
           <h1>Welcome, {student.name}!</h1>
           <p>Student ID: {student.regNo}</p>
@@ -240,7 +245,6 @@ export default function StudentDashboard() {
               <h2>Your Performance Metrics</h2>
               <div className="metrics-grid">
                 <div className="metric-card">
-                  {/* <div className="metric-icon">📚</div> */}
                   <div className="metric-content">
                     <h3>Attendance</h3>
                     <div className="metric-value">{student.attendance}%</div>
@@ -254,7 +258,6 @@ export default function StudentDashboard() {
                 </div>
 
                 <div className="metric-card">
-                  {/* <div className="metric-icon">📝</div> */}
                   <div className="metric-content">
                     <h3>Obtained Marks</h3>
                     <div className="metric-value">{student.marks}%</div>
@@ -268,7 +271,6 @@ export default function StudentDashboard() {
                 </div>
 
                 <div className="metric-card">
-                  {/* <div className="metric-icon">✅</div> */}
                   <div className="metric-content">
                     <h3>Assignments</h3>
                     <div className="metric-value">{student.assignments}%</div>

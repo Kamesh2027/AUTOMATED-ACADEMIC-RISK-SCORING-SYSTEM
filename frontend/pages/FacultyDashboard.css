@@ -3,7 +3,6 @@
   background-color: #bbeeeb;
   min-height: 100vh;
   background: var(--white);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .fdashboard-container {
@@ -218,7 +217,6 @@
   border: 1.5px solid #e0e0e0;
   border-radius: 8px;
   font-size: 14px;
-  font-family: inherit;
   transition: border-color 0.3s;
   box-sizing: border-box;
   resize: vertical;

@@ -12,6 +12,9 @@ export default function FacultyDashboard() {
   const { user, logout } = useContext(AuthContext); 
 
   const [students, setStudents] = useState([]);
+  const [activeSection, setActiveSection] = useState(() => {
+    return localStorage.getItem("facultyDashboardSection") || "dashboard";
+  });
   const [filter, setFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState("");
@@ -30,6 +33,9 @@ export default function FacultyDashboard() {
     category: "Academic",
     priority: "Medium"
   });
+  useEffect(() => {
+    localStorage.setItem("facultyDashboardSection", activeSection);
+  }, [activeSection]);
 
   useEffect(() => {
     fetchStudents();

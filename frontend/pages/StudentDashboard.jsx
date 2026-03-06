@@ -8,23 +8,19 @@ import { API_BASE_URL } from "../config";
 import Modal from "../components/Modal";
 
 export default function StudentDashboard() {
-    const handleDeleteClick = (feedbackId) => {
-      setDeleteTargetId(feedbackId);
-      setDeleteConfirmOpen(true);
-    };
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
 
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activeSection, setActiveSection] = useState("profileInfo");
+  const [activeSection, setActiveSection] = useState(() => {
+    return localStorage.getItem("studentDashboardSection") || "profileInfo";
+  });
   const [feedback, setFeedback] = useState([]);
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedFeedback, setSelectedFeedback] = useState(null);
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [deleteTargetId, setDeleteTargetId] = useState(null);
   const handleViewFeedback = (item) => {
     setSelectedFeedback(item);
     setModalOpen(true);
@@ -41,6 +37,10 @@ export default function StudentDashboard() {
   useEffect(() => {
     fetchStudentData();
   }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem("studentDashboardSection", activeSection);
+  }, [activeSection]);
 
   const fetchStudentData = async () => {
     if (!user) {
@@ -104,19 +104,20 @@ export default function StudentDashboard() {
   };
 
   const handleDeleteFeedback = async (feedbackId) => {
+    if (!window.confirm("Are you sure you want to delete this feedback?")) {
+      return;
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
         method: "DELETE"
       });
+
       if (response.ok) {
         setFeedback(feedback.filter(f => f._id !== feedbackId));
       }
-      setDeleteConfirmOpen(false);
-      setDeleteTargetId(null);
     } catch (err) {
       console.error("Failed to delete feedback:", err.message);
-      setDeleteConfirmOpen(false);
-      setDeleteTargetId(null);
     }
   };
 
@@ -183,7 +184,7 @@ export default function StudentDashboard() {
         {/* Automated Risk Alert Notification */}
         {student.riskAlert && (
           <div className="alert alert-warning" style={{marginBottom: '1rem'}}>
-            <strong><i className="bi bi-exclamation-triangle"></i> Risk Alert:</strong> Your risk score is below the safe threshold.
+            <strong>Risk Alert:</strong> Your risk score is below the safe threshold. Please contact your faculty for support.
           </div>
         )}
         <div className="header">
@@ -327,7 +328,7 @@ export default function StudentDashboard() {
                       <div className="feedback-header-row">
                         <div className="feedback-info">
                           <p className="faculty-name">From: {item.facultyName}</p>
-                          <p className="faculty-id">Faculty Reg No: {item.facultyRegNo}</p>
+                          <p className="faculty-id">Faculty ID: {item.facultyId}</p>
                           <h3>{item.title}</h3>
                         </div>
                         <div className="feedback-badges">
@@ -363,7 +364,7 @@ export default function StudentDashboard() {
                           </button>
                           <button
                             className="btn-small btn-delete"
-                            onClick={() => handleDeleteClick(item._id)}
+                            onClick={() => handleDeleteFeedback(item._id)}
                           >
                             Delete
                           </button>
@@ -380,7 +381,7 @@ export default function StudentDashboard() {
                                     <button className="modal-close" onClick={handleCloseModal}>×</button>
                                   </div>
                                   <div style={{margin: '0.5rem 0'}}>
-                                    <span><strong>Faculty Reg No:</strong> {selectedFeedback.facultyRegNo}</span>
+                                    <span><strong>Faculty ID:</strong> {selectedFeedback.facultyId || "N/A"}</span>
                                   </div>
                                   <div style={{margin: '1rem 0'}}>
                                     <span className={`badge-category badge-${selectedFeedback.category.toLowerCase()}`}>{selectedFeedback.category}</span>
@@ -404,17 +405,6 @@ export default function StudentDashboard() {
                                 </div>
                               )}
                             </Modal>
-                      {/* Delete Confirmation Modal */}
-                      <Modal isOpen={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
-                        <div className="modal-delete-confirm">
-                          <h3>Delete Feedback</h3>
-                          <p>Are you sure you want to delete this feedback?</p>
-                          <div className="modal-actions">
-                            <button className="btn btn-secondary" onClick={() => setDeleteConfirmOpen(false)}>Cancel</button>
-                            <button className="btn btn-danger" onClick={() => handleDeleteFeedback(deleteTargetId)}>Delete</button>
-                          </div>
-                        </div>
-                      </Modal>
                 </div>
               )}
             </div>

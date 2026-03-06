@@ -55,7 +55,12 @@ export default function AdminDashboard() {
   const [showFacultyDeleteModal, setShowFacultyDeleteModal] = useState(false);
   const [facultyToDelete, setFacultyToDelete] = useState(null);
 
-  const [activeSection, setActiveSection] = useState("dashboard");
+  const [activeSection, setActiveSection] = useState(() => {
+    return localStorage.getItem("adminDashboardSection") || "dashboard";
+  });
+    useEffect(() => {
+      localStorage.setItem("adminDashboardSection", activeSection);
+    }, [activeSection]);
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [regNoError, setRegNoError] = useState("");

@@ -1,0 +1,116 @@
+/* Delete Confirmation Modal Styles */
+.modal-delete-confirm {
+  padding: 1rem;
+  text-align: center;
+}
+.modal-delete-confirm h3 {
+  margin-bottom: 0.5rem;
+  color: #d32f2f;
+}
+.modal-delete-confirm p {
+  margin-bottom: 1rem;
+  color: #444;
+}
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn.btn-danger {
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn.btn-danger:hover {
+  background: #b71c1c;
+}
+.btn.btn-secondary {
+  background: #888;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn.btn-secondary:hover {
+  background: #555;
+}
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.modal-from {
+  font-size: 1.1rem;
+  color: #444;
+}
+.modal-close {
+  position: static;
+  margin-left: auto;
+  font-size: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+  line-height: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.modal-feedback-message {
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-line;
+  word-break: break-word;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  min-width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+  line-height: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+/* .modal-close:hover {
+  color: #f44336;
+} */

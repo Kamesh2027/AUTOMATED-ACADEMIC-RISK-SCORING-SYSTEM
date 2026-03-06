@@ -1,3 +1,34 @@
+.btn-view {
+  background-color: #1976d2;
+  color: white;
+}
+.btn-view:hover {
+  background-color: #125ea2;
+  transform: translateY(-1px);
+}
+
+.modal-feedback-details {
+  padding: 0.5rem 0;
+}
+.modal-feedback-details h2 {
+  margin-top: 0;
+  color: #333;
+}
+.modal-feedback-details p {
+  margin: 0.5rem 0;
+}
+.modal-feedback-message {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-left: 3px solid #65b2bf;
+}
+.modal-feedback-date {
+  color: #888;
+  font-size: 13px;
+  margin-top: 1rem;
+}
 .student-dashboard {
   margin-top: 70px;
   background-color: #e2ebea;
@@ -348,7 +379,7 @@
   background: #f9f9f9;
   border: 1.5px solid #e8e8e8;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.0rem;
   transition: all 0.3s ease;
   border-left: 4px solid #95a5a6;
 }
@@ -383,6 +414,13 @@
 }
 
 .faculty-name {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.faculty-id {
   color: #666;
   font-size: 14px;
   margin: 0;
@@ -471,8 +509,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
+  margin-top: 0rem;
+  padding-top: 0.5rem;
   border-top: 1px solid #e0e0e0;
 }
 

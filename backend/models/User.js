@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "faculty", "student"],
     required: true
   },
+  facultyRegNo: {
+    type: String,
+    required: function() { return this.role === "faculty"; }
+  },
   createdAt: {
     type: Date,
     default: Date.now

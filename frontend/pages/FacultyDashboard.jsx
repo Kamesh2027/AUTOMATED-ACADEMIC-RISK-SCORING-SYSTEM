@@ -118,14 +118,16 @@ export default function FacultyDashboard() {
       const response = await fetch(`${API_BASE_URL}/feedback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          studentEmail: feedbackStudent.email,
-          title: feedbackForm.title,
-          message: feedbackForm.message,
-          category: feedbackForm.category,
-          priority: feedbackForm.priority,
-          facultyName: user.name
-        })
+          body: JSON.stringify({
+            studentEmail: feedbackStudent.email,
+            title: feedbackForm.title,
+            message: feedbackForm.message,
+            category: feedbackForm.category,
+            priority: feedbackForm.priority,
+            facultyName: user.name,
+            facultyId: user.id, // send MongoDB ObjectId
+            facultyRegNo: user.facultyRegNo // send facultyRegNo as string
+          })
       });
 
       const data = await response.json();
@@ -361,7 +363,7 @@ export default function FacultyDashboard() {
                 <div className="card-body">
                   <div className="info-row">
                     <span>Email:</span>
-                    <strong>{student.email}</strong>
+                    <strong className="email">{student.email}</strong>
                   </div>
                   <div className="info-row">
                     <span>Reg No:</span>
@@ -410,7 +412,7 @@ export default function FacultyDashboard() {
             ))
           ) : (
             <div className="no-students">
-              <p>No students found with the selected risk level</p>
+              <p>No students found</p>
             </div>
           )}
         </div>

@@ -7,10 +7,23 @@ exports.getFeedbackByStudent = async (req, res) => {
   try {
     const { studentEmail } = req.params;
 
+    // Populate facultyId from User and return facultyRegNo directly
     const feedback = await Feedback.find({ studentEmail })
+      .populate({ path: 'facultyId', select: 'facultyRegNo email name' })
       .sort({ createdAt: -1 });
 
-    res.json(feedback);
+    const feedbackWithFacultyRegNo = feedback.map(fb => {
+      let facultyRegNo = null;
+      if (fb.facultyId && typeof fb.facultyId === 'object' && fb.facultyId.facultyRegNo) {
+        facultyRegNo = fb.facultyId.facultyRegNo;
+      }
+      return {
+        ...fb.toObject(),
+        facultyRegNo: facultyRegNo || null
+      };
+    });
+
+    res.json(feedbackWithFacultyRegNo);
   } catch (error) {
     res.status(500).json({ message: "Error fetching feedback", error: error.message });
   }
@@ -23,6 +36,7 @@ exports.createFeedback = async (req, res) => {
     
     const { studentEmail, title, message, category, priority, facultyName } = req.body;
     const facultyId = req.body.facultyId || req.user?.id;
+      const facultyRegNo = req.body.facultyRegNo || null;
 
     // Validate required fields
     if (!studentEmail) {
@@ -57,6 +71,7 @@ exports.createFeedback = async (req, res) => {
       studentEmail,
       facultyId,
       facultyName: facultyName || "Faculty Member",
+        facultyRegNo,
       title: title.trim(),
       message: message.trim(),
       category: category || "General",

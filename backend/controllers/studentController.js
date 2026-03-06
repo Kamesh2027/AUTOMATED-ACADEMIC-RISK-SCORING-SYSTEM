@@ -114,7 +114,8 @@ exports.addStudent = async (req, res) => {
 
     res.status(201).json(responsePayload);
   } catch (error) {
-    res.status(500).json({ message: "Error adding student", error: error.message });
+    console.error("Add Student Error:", error);
+    res.status(500).json({ message: "Error adding student", error: error.message, stack: error.stack });
   }
 };
 

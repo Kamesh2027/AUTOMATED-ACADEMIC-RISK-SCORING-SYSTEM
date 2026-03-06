@@ -9,6 +9,7 @@ import { API_BASE_URL } from "../config";
 //const API_BASE_URL = "http://localhost:5000/api";
 
 export default function AdminDashboard() {
+    facultyId: ""
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
 
@@ -34,7 +35,8 @@ export default function AdminDashboard() {
   const [facultyForm, setFacultyForm] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    facultyRegNo: ""
   });
 
   const [settingsForm, setSettingsForm] = useState({
@@ -219,6 +221,7 @@ export default function AdminDashboard() {
           name: facultyForm.name,
           email: facultyForm.email,
           password: facultyForm.password,
+          facultyRegNo: facultyForm.facultyRegNo,
           role: "faculty"
         })
       });
@@ -232,7 +235,7 @@ export default function AdminDashboard() {
       }
 
       setSuccessMessage("Faculty member added successfully!");
-      setFacultyForm({ name: "", email: "", password: "" });
+      setFacultyForm({ name: "", email: "", password: "", facultyRegNo: "" });
       // refresh faculty list and dashboard counts
       fetchFaculty();
       setLoading(false);
@@ -426,7 +429,8 @@ export default function AdminDashboard() {
     try {
       const body = {
         name: editFaculty.name,
-        email: editFaculty.email
+        email: editFaculty.email,
+        facultyRegNo: editFaculty.facultyRegNo
       };
       if (editFaculty.password) body.password = editFaculty.password;
       const response = await fetch(`${API_BASE_URL}/auth/faculty/${editFaculty._id}`, {
@@ -523,6 +527,15 @@ export default function AdminDashboard() {
             />
           </div>
           <div className="form-group">
+            <label>Faculty ID</label>
+            <input
+              type="text"
+              value={editFaculty.facultyId || ""}
+              onChange={e => handleEditFacultyChange('facultyId', e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
             <label>Password</label>
             <input
               type="password"
@@ -615,6 +628,15 @@ export default function AdminDashboard() {
                   type="email"
                   value={editFaculty.email}
                   onChange={e => handleEditFacultyChange('email', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Faculty Reg No</label>
+                <input
+                  type="text"
+                  value={editFaculty.facultyRegNo || ""}
+                  onChange={e => handleEditFacultyChange('facultyRegNo', e.target.value)}
                   required
                 />
               </div>
@@ -823,6 +845,7 @@ export default function AdminDashboard() {
                     <tr>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Faculty ID</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -836,6 +859,7 @@ export default function AdminDashboard() {
                         <tr key={f._id}>
                           <td>{f.name}</td>
                           <td>{f.email}</td>
+                          <td>{f.facultyRegNo}</td>
                           <td>
                             <div className="action-button">
                               <button
@@ -997,6 +1021,19 @@ export default function AdminDashboard() {
                 {facultyEmailError && <span className="error-text">{facultyEmailError}</span>}
               </div>
 
+              <div className="form-group">
+                <label>Faculty ID</label>
+                <input
+                  type="text"
+                  placeholder="Enter Faculty ID"
+                  required
+                  value={facultyForm.facultyRegNo}
+                  onChange={(e) =>
+                    setFacultyForm({ ...facultyForm, facultyRegNo: e.target.value })
+                  }
+                  disabled={loading}
+                />
+              </div>
               <div className="form-group">
                 <label>Password</label>
                 <input

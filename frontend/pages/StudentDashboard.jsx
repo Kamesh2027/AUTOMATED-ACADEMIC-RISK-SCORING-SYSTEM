@@ -5,8 +5,13 @@ import { Navbar } from "../components/Navbar";
 import { StudentSidebar } from "../components/StudentSidebar";
 import "./StudentDashboard.css";
 import { API_BASE_URL } from "../config";
+import Modal from "../components/Modal";
 
 export default function StudentDashboard() {
+    const handleDeleteClick = (feedbackId) => {
+      setDeleteTargetId(feedbackId);
+      setDeleteConfirmOpen(true);
+    };
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
 
@@ -16,6 +21,22 @@ export default function StudentDashboard() {
   const [activeSection, setActiveSection] = useState("profileInfo");
   const [feedback, setFeedback] = useState([]);
   const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
+  const handleViewFeedback = (item) => {
+    setSelectedFeedback(item);
+    setModalOpen(true);
+    if (!item.isRead) {
+      markFeedbackAsRead(item._id);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedFeedback(null);
+  };
 
   useEffect(() => {
     fetchStudentData();
@@ -83,20 +104,19 @@ export default function StudentDashboard() {
   };
 
   const handleDeleteFeedback = async (feedbackId) => {
-    if (!window.confirm("Are you sure you want to delete this feedback?")) {
-      return;
-    }
-
     try {
       const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
         method: "DELETE"
       });
-
       if (response.ok) {
         setFeedback(feedback.filter(f => f._id !== feedbackId));
       }
+      setDeleteConfirmOpen(false);
+      setDeleteTargetId(null);
     } catch (err) {
       console.error("Failed to delete feedback:", err.message);
+      setDeleteConfirmOpen(false);
+      setDeleteTargetId(null);
     }
   };
 
@@ -306,8 +326,9 @@ export default function StudentDashboard() {
                     <div key={item._id} className={`feedback-card ${item.isRead ? 'read' : 'unread'}`}>
                       <div className="feedback-header-row">
                         <div className="feedback-info">
-                          <h3>{item.title}</h3>
                           <p className="faculty-name">From: {item.facultyName}</p>
+                          <p className="faculty-id">Faculty Reg No: {item.facultyRegNo}</p>
+                          <h3>{item.title}</h3>
                         </div>
                         <div className="feedback-badges">
                           <span className={`badge-category badge-${item.category.toLowerCase()}`}>
@@ -320,12 +341,11 @@ export default function StudentDashboard() {
                         </div>
                       </div>
 
-                      <div className="feedback-message">
-                        <p>{item.message}</p>
-                      </div>
+
 
                       <div className="feedback-footer">
                         <span className="feedback-date">
+                          <br />
                           {new Date(item.createdAt).toLocaleDateString(undefined, {
                             year: 'numeric',
                             month: 'short',
@@ -335,17 +355,15 @@ export default function StudentDashboard() {
                           })}
                         </span>
                         <div className="feedback-actions">
-                          {!item.isRead && (
-                            <button
-                              className="btn-small btn-read"
-                              onClick={() => markFeedbackAsRead(item._id)}
-                            >
-                              Mark as Read
-                            </button>
-                          )}
+                          <button
+                            className="btn-small btn-view"
+                            onClick={() => handleViewFeedback(item)}
+                          >
+                            View
+                          </button>
                           <button
                             className="btn-small btn-delete"
-                            onClick={() => handleDeleteFeedback(item._id)}
+                            onClick={() => handleDeleteClick(item._id)}
                           >
                             Delete
                           </button>
@@ -353,6 +371,50 @@ export default function StudentDashboard() {
                       </div>
                     </div>
                   ))}
+                            {/* Feedback Modal */}
+                            <Modal isOpen={modalOpen} onClose={handleCloseModal}>
+                              {selectedFeedback && (
+                                <div className="modal-feedback-details">
+                                  <div className="modal-header-row">
+                                    <span className="modal-from"><strong>From:</strong> {selectedFeedback.facultyName}</span>
+                                    <button className="modal-close" onClick={handleCloseModal}>×</button>
+                                  </div>
+                                  <div style={{margin: '0.5rem 0'}}>
+                                    <span><strong>Faculty Reg No:</strong> {selectedFeedback.facultyRegNo}</span>
+                                  </div>
+                                  <div style={{margin: '1rem 0'}}>
+                                    <span className={`badge-category badge-${selectedFeedback.category.toLowerCase()}`}>{selectedFeedback.category}</span>
+                                    <span className={`badge-priority badge-priority-${selectedFeedback.priority.toLowerCase()}`}>{selectedFeedback.priority}</span>
+                                  </div>
+                                  <div>Feedback:</div>
+                                  <div className="modal-feedback-message">
+                                    {selectedFeedback.message}
+                                  </div>
+                                  <div className="modal-feedback-date">
+                                    <small>
+                                      {new Date(selectedFeedback.createdAt).toLocaleDateString(undefined, {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                      })}
+                                    </small>
+                                  </div>
+                                </div>
+                              )}
+                            </Modal>
+                      {/* Delete Confirmation Modal */}
+                      <Modal isOpen={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
+                        <div className="modal-delete-confirm">
+                          <h3>Delete Feedback</h3>
+                          <p>Are you sure you want to delete this feedback?</p>
+                          <div className="modal-actions">
+                            <button className="btn btn-secondary" onClick={() => setDeleteConfirmOpen(false)}>Cancel</button>
+                            <button className="btn btn-danger" onClick={() => handleDeleteFeedback(deleteTargetId)}>Delete</button>
+                          </div>
+                        </div>
+                      </Modal>
                 </div>
               )}
             </div>

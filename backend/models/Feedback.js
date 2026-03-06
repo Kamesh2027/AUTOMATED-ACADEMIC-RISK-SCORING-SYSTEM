@@ -19,6 +19,10 @@ const feedbackSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+    facultyRegNo: {
+      type: String,
+      default: null
+    },
   title: {
     type: String,
     required: true,

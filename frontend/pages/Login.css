@@ -145,8 +145,8 @@
 }
 
 .login-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 28px rgba(43, 179, 168, 0.25);
+  /* No transform, keep box-shadow same as default */
+  box-shadow: 0 12px 24px rgba(43, 179, 168, 0.18);
 }
 
 .login-button:disabled {

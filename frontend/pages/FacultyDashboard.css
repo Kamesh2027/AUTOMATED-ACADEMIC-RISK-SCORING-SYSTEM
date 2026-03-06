@@ -72,7 +72,7 @@
 }
 
 .search-input {
-  width: 50%;
+  width: 45%;
   padding: 0.75rem 1.25rem;
   border: 1.5px solid #e0e0e0;
   border-radius: 8px;
@@ -363,14 +363,15 @@
 
 .card-body {
   padding: 1.5rem;
+  padding-bottom: 0px;
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -388,12 +389,16 @@
   font-weight: 600;
 }
 
+.email {
+  font-size: 13px;
+}
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  margin: 1.5rem 0;
-  padding: 1.5rem 0;
+  margin: 1rem 0;
+  padding: 1rem 0;
   border-top: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -422,7 +427,7 @@
 
 .risk-info {
   background: #f5f7fa;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 8px;
   text-align: center;
   margin-bottom: 1rem;
@@ -431,7 +436,7 @@
 }
 
 .card-footer {
-  padding: 1.5rem;
+  padding: 1.0rem;
   background: #f9f9f9;
   border-top: 1px solid #f0f0f0;
   display: flex;

@@ -62,7 +62,7 @@ const Login = () => {
     <div className="login-page">
       <div className="login-card glass-card float-in">
         <div className="login-brand">
-          <h1 className="login-title">AARSS Portal</h1>
+          <h1 className="login-title">Student Portal</h1>
         </div>
 
         {error && (

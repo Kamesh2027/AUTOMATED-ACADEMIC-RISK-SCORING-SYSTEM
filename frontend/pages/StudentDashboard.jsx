@@ -183,7 +183,7 @@ export default function StudentDashboard() {
         {/* Automated Risk Alert Notification */}
         {student.riskAlert && (
           <div className="alert alert-warning" style={{marginBottom: '1rem'}}>
-            <strong>Risk Alert:</strong> Your risk score is below the safe threshold. Please contact your faculty for support.
+            <strong><i className="bi bi-exclamation-triangle"></i> Risk Alert:</strong> Your risk score is below the safe threshold.
           </div>
         )}
         <div className="header">

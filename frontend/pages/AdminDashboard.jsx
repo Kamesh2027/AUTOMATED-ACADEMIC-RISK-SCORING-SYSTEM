@@ -49,6 +49,7 @@ export default function AdminDashboard() {
 
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState(null);
   // faculty delete states
@@ -85,6 +86,16 @@ export default function AdminDashboard() {
       return () => clearTimeout(timer);
     }
   }, [successMessage]);
+
+  useEffect(() => {
+  if (showToast) {
+    const timer = setTimeout(() => {
+      setShowToast(false);
+      setSuccessMessage("");
+    }, 2000);
+    return () => clearTimeout(timer);
+  }
+}, [showToast]);
 
   const fetchStudents = async () => {
     try {
@@ -189,6 +200,7 @@ export default function AdminDashboard() {
       }
 
       setSuccessMessage("Student added successfully!");
+      setShowToast(true);
       setStudentForm({
         name: "",
         email: "",
@@ -662,7 +674,26 @@ export default function AdminDashboard() {
 
       <div className="dashboard-container">
         {error && <div className="alert alert-error">{error}</div>}
-        {successMessage && <div className="alert alert-success">{successMessage}</div>}
+        {showToast && (
+          <div style={{
+            position: "fixed",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#e6f9ec",
+            color: "#218a4a",
+            borderRadius: "12px",
+            boxShadow: "0 2px 8px rgba(34,48,60,0.08)",
+            padding: "0.7rem 1.5rem",
+            fontWeight: 600,
+            fontSize: "1rem",
+            zIndex: 2000,
+            minWidth: "180px",
+            textAlign: "center"
+          }}>
+            {successMessage}
+          </div>
+        )}
 
         {showDeleteModal && (
           <div className="modal-overlay">

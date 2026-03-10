@@ -1,20 +1,69 @@
-.navbar {
-  background: linear-gradient(135deg, var(--accent) 100%);
-  color: white;
+/* .navbar {
+  background: #fff;
+  color: #22303c;
   padding: 0;
-  box-shadow: 0 4px 15px rgba(101, 178, 191, 0.3);
+  box-shadow: 0 2px 8px rgba(34,48,60,0.08);
+  border-bottom: 1px solid #f0f0f0;
   position: fixed;
   top: 0;
   z-index: 1000;
   width: 100%;
+} */
+
+.navbar {
+  height: 70px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    #0f172a 250px,
+    #fffefe 250px
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar-container {
-  margin: 0 auto;
-  padding: 1rem 2rem;
+  width: 100%;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.faculty-navbar {
+  background: linear-gradient(135deg, var(--accent) 100%) !important;
+}
+
+.faculty-navbar .navbar-brand h1{
+  color: white !important;
+}
+
+.faculty-navbar .role-badge {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+}
+
+.faculty-navbar .logout-btn {
+  background: #e74c3c !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.faculty-navbar .logout-btn:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: #c0392b !important;
+  color: #c0392b;
+  transform: translateY(-1px);
+}
+
+.faculty-navbar .user-name {
+  color: white !important;
 }
 
 .navbar-brand {
@@ -27,7 +76,7 @@
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: white;
+  color: #136dec;
 }
 
 .brand-subtitle {
@@ -63,20 +112,25 @@
 }
 
 .logout-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-size: 14px;
+  background: transparent;
+  border: 1.5px solid #e74c3c;
+  color: #e74c3c;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
 
 .logout-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  background: #ffeaea;
+  border-color: #c0392b;
+  color: #c0392b;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {

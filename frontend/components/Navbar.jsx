@@ -11,7 +11,7 @@ export const Navbar = ({ user, onLogout }) => {
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${user?.role === "faculty" ? "faculty-navbar" : ""}`}>
       <div className="navbar-container">
         <div className="navbar-brand">
           <h1>AARSS Portal</h1>
@@ -20,11 +20,11 @@ export const Navbar = ({ user, onLogout }) => {
         {user && (
           <div className="navbar-user">
             <div className="user-info">
-              {/* <span className="role-badge">{getRoleLabel(user.role)}</span> */}
+              <span className="role-badge">{getRoleLabel(user.role)}</span>
               <span className="user-name">{user.name}</span>
             </div>
             <button className="logout-btn" onClick={onLogout}>
-              Logout
+              <i className="bi bi-box-arrow-right"></i>Logout
             </button>
           </div>
         )}

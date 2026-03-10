@@ -11,10 +11,6 @@
   padding: 2rem 3rem;
 }
 
-.header {
-  margin-bottom: 3rem;
-}
-
 .header h1 {
   color: #333;
   font-size: 32px;
@@ -30,7 +26,7 @@
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -304,8 +300,10 @@
 
 .students-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5rem;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 .student-card {

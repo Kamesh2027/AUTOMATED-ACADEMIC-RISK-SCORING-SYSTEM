@@ -1,6 +1,6 @@
 .student-sidebar {
   width: 250px;
-  background: linear-gradient(135deg, var(--accent) 100%);
+  background: #0f172a;
   height: 100vh;
   position: fixed;
   left: 0;

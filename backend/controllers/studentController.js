@@ -2,6 +2,7 @@ const Student = require("../models/Student");
 const User = require("../models/User");
 const Feedback = require("../models/Feedback"); // Add Feedback model
 const { calculateRisk } = require("../utils/riskCalculator");
+const Notification = require("../models/Notification");
 
 exports.getStudents = async (req, res) => {
   try {
@@ -158,6 +159,7 @@ exports.updateMarks = async (req, res) => {
 };
 
 exports.updateStudent = async (req, res) => {
+  console.log("Update request body:", req.body);
   try {
     const { id } = req.params;
     const { name, email, regNo, password } = req.body;
@@ -175,15 +177,15 @@ exports.updateStudent = async (req, res) => {
     if (email !== undefined) student.email = email;
     if (regNo !== undefined) student.regNo = regNo;
     let marksChanged = false;
-    if (req.body.marks !== undefined) {
+    if (req.body.marks !== undefined && req.body.marks !== null && req.body.marks !== "") {
       student.marks = req.body.marks;
       marksChanged = true;
     }
-    if (req.body.attendance !== undefined) {
+    if (req.body.attendance !== undefined && req.body.attendance !== null && req.body.attendance !== "") {
       student.attendance = req.body.attendance;
       marksChanged = true;
     }
-    if (req.body.assignments !== undefined) {
+    if (req.body.assignments !== undefined && req.body.assignments !== null && req.body.assignments !== "") {
       student.assignments = req.body.assignments;
       marksChanged = true;
     }
@@ -220,6 +222,7 @@ exports.updateStudent = async (req, res) => {
     }
     res.json(student);
   } catch (error) {
+    console.error("Update error:", error);
     res.status(500).json({ message: "Error updating student", error: error.message });
   }
 };

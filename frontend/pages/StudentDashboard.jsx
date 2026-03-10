@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Navbar } from "../components/Navbar";
 import { StudentSidebar } from "../components/StudentSidebar";
+import RiskLevelCircle from "../components/RiskLevelCircle";
 import "./StudentDashboard.css";
 import { API_BASE_URL } from "../config";
 import Modal from "../components/Modal";
@@ -224,22 +225,9 @@ export default function StudentDashboard() {
 
           {/* Dashboard Section */}
           {activeSection === "dashboard" && (
-            <div className="main-card risk-card">
-              <div className="risk-header">
-                <h2>Your Risk Level</h2>
-              </div>
-              <div className="risk-display">
-                <div
-                  className="risk-badge"
-                  style={{ backgroundColor: getRiskColor(student.riskLevel) }}
-                >
-                  {student.riskLevel}
-                </div>
-                <div className="score-display">
-                  <p className="score-label">Overall Score</p>
-                  <p className="score-value">{student.score}</p>
-                </div>
-              </div>
+            <div className="main-card risk-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+              {console.log("RiskLevel:", student.riskLevel)}
+              <RiskLevelCircle value={student.score} label={student.riskLevel || "-"} increase={5} />
               <div className="risk-explanation">
                 {student.riskLevel === "Low" && (
                   <p>✓ Excellent! You're performing well. Keep up the great work!</p>
@@ -328,7 +316,7 @@ export default function StudentDashboard() {
                       <div className="feedback-header-row">
                         <div className="feedback-info">
                           <p className="faculty-name">From: {item.facultyName}</p>
-                          <p className="faculty-id">Faculty ID: {item.facultyId}</p>
+                          <p className="faculty-id">Faculty ID: {item.facultyRegNo}</p>
                           <h3>{item.title}</h3>
                         </div>
                         <div className="feedback-badges">
@@ -381,7 +369,7 @@ export default function StudentDashboard() {
                                     <button className="modal-close" onClick={handleCloseModal}>×</button>
                                   </div>
                                   <div style={{margin: '0.5rem 0'}}>
-                                    <span><strong>Faculty ID:</strong> {selectedFeedback.facultyId || "N/A"}</span>
+                                    <span><strong>Faculty ID:</strong> {selectedFeedback.facultyRegNo || "N/A"}</span>
                                   </div>
                                   <div style={{margin: '1rem 0'}}>
                                     <span className={`badge-category badge-${selectedFeedback.category.toLowerCase()}`}>{selectedFeedback.category}</span>

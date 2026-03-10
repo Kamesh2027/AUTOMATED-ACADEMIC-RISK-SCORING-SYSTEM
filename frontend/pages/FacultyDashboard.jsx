@@ -19,6 +19,7 @@ export default function FacultyDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -86,9 +87,14 @@ export default function FacultyDashboard() {
       }
 
       setSuccessMessage("Marks updated successfully!");
+      setShowToast(true);
       setEditingStudent(null);
       fetchStudents();
       setLoading(false);
+      setTimeout(() => {
+        setShowToast(false);
+        setSuccessMessage("");
+      }, 2000);
     } catch (err) {
       setError("Connection error: " + err.message);
       setLoading(false);
@@ -169,7 +175,26 @@ export default function FacultyDashboard() {
         </div>
 
         {error && <div className="alert alert-error">{error}</div>}
-        {successMessage && <div className="alert alert-success">{successMessage}</div>}
+        {showToast && (
+          <div style={{
+            position: "fixed",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#e6f9ec",
+            color: "#218a4a",
+            borderRadius: "12px",
+            boxShadow: "0 2px 8px rgba(34,48,60,0.08)",
+            padding: "0.7rem 1.5rem",
+            fontWeight: 600,
+            fontSize: "1rem",
+            zIndex: 2000,
+            minWidth: "180px",
+            textAlign: "center"
+          }}>
+            {successMessage}
+          </div>
+        )}
 
         <div className="filter-section">
           <div className="filter-group">

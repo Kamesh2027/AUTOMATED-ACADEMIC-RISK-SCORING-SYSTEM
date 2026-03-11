@@ -15,8 +15,8 @@
   width: 100%;
   background: linear-gradient(
     to right,
-    #0f172a 250px,
-    #fffefe 250px
+    #0f172a 248px,
+    white 250px
   );
 
   display: flex;
@@ -98,7 +98,7 @@
 }
 
 .role-badge {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(141, 141, 141, 0.501);
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   font-size: 12px;

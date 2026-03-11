@@ -4,7 +4,7 @@ export const Navbar = ({ user, onLogout }) => {
   const getRoleLabel = (role) => {
     const labels = {
       admin: "Administrator",
-      faculty: "Faculty Member",
+      faculty: "Faculty",
       student: "Student"
     };
     return labels[role] || role;

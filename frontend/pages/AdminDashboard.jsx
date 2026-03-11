@@ -71,8 +71,11 @@ export default function AdminDashboard() {
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editStudent, setEditStudent] = useState(null);
+  const [editStudentSaving, setEditStudentSaving] = useState("idle"); // idle | saving | saved
   const [editFacultyModalOpen, setEditFacultyModalOpen] = useState(false);
   const [editFaculty, setEditFaculty] = useState(null);
+  const [editFacultySaving, setEditFacultySaving] = useState("idle"); // idle | saving | saved
+  const [editUpdateSaving, setEditUpdateSaving] = useState("idle");
 
   useEffect(() => {
     fetchStudents();
@@ -266,7 +269,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
-    setLoading(true);
+    setEditUpdateSaving("Updating...");
 
     try {
       const totalWeight =
@@ -276,13 +279,13 @@ export default function AdminDashboard() {
 
       if (totalWeight !== 100) {
         setError("Weights must sum to 100%");
-        setLoading(false);
+        setEditUpdateSaving("idle");
         return;
       }
 
       if (Number(settingsForm.mediumRiskMin) >= Number(settingsForm.lowRiskMin)) {
         setError("Medium risk threshold must be less than low risk threshold");
-        setLoading(false);
+        setEditUpdateSaving("idle");
         return;
       }
 
@@ -302,16 +305,19 @@ export default function AdminDashboard() {
 
       if (!response.ok) {
         setError(data.message || "Failed to update settings");
-        setLoading(false);
+        setEditUpdateSaving("idle");
         return;
       }
 
       setSettings(data);
       setSuccessMessage("Risk settings updated successfully!");
-      setLoading(false);
+      setEditUpdateSaving("Updated");
+      setTimeout(() => {
+        setEditUpdateSaving("idle");
+      }, 1000);
     } catch (err) {
       setError("Connection error: " + err.message);
-      setLoading(false);
+      setEditUpdateSaving("idle");
     }
   };
 
@@ -389,11 +395,13 @@ export default function AdminDashboard() {
   const openEditStudentModal = (student) => {
     setEditStudent({ ...student, password: "" });
     setEditModalOpen(true);
+    setEditStudentSaving("idle");
   };
 
   const closeEditStudentModal = () => {
     setEditModalOpen(false);
     setEditStudent(null);
+    // Don't reset saving state here; let timeout handle it
   };
 
   const handleEditStudentChange = (field, value) => {
@@ -402,6 +410,7 @@ export default function AdminDashboard() {
 
   const handleSaveEditStudent = async () => {
     if (!editStudent) return;
+    setEditStudentSaving("saving");
     try {
       const body = {
         name: editStudent.name,
@@ -415,26 +424,34 @@ export default function AdminDashboard() {
         body: JSON.stringify(body)
       });
       if (response.ok) {
-        // Refetch students from the backend to ensure DB is updated and UI is in sync
         await fetchStudents();
-        closeEditStudentModal();
+        setEditStudentSaving("saved");
+        setTimeout(() => {
+          setEditModalOpen(false);
+          setEditStudent(null);
+          setEditStudentSaving("idle");
+        }, 1000); // show 'Saved' for 1s then close
       } else {
         const data = await response.json();
         alert(data.message || "Failed to update student");
+        setEditStudentSaving("idle");
       }
     } catch (err) {
       alert("Error updating student: " + err.message);
+      setEditStudentSaving("idle");
     }
   };
 
   const openEditFacultyModal = (faculty) => {
     setEditFaculty({ ...faculty, password: "" });
     setEditFacultyModalOpen(true);
+    setEditFacultySaving("idle");
   };
 
   const closeEditFacultyModal = () => {
     setEditFacultyModalOpen(false);
     setEditFaculty(null);
+    // Don't reset saving state here; let timeout handle it
   };
 
   const handleEditFacultyChange = (field, value) => {
@@ -443,6 +460,7 @@ export default function AdminDashboard() {
 
   const handleSaveEditFaculty = async () => {
     if (!editFaculty) return;
+    setEditFacultySaving("saving");
     try {
       const body = {
         name: editFaculty.name,
@@ -457,13 +475,20 @@ export default function AdminDashboard() {
       });
       if (response.ok) {
         await fetchFaculty();
-        closeEditFacultyModal();
+        setEditFacultySaving("saved");
+        setTimeout(() => {
+          setEditFacultyModalOpen(false);
+          setEditFaculty(null);
+          setEditFacultySaving("idle");
+        }, 1000); // show 'Saved' for 1s then close
       } else {
         const data = await response.json();
         alert(data.message || "Failed to update faculty");
+        setEditFacultySaving("idle");
       }
     } catch (err) {
       alert("Error updating faculty: " + err.message);
+      setEditFacultySaving("idle");
     }
   };
 
@@ -482,6 +507,7 @@ export default function AdminDashboard() {
               value={editStudent.name}
               onChange={e => handleEditStudentChange('name', e.target.value)}
               required
+              disabled={editStudentSaving === "saving"}
             />
           </div>
           <div className="form-group">
@@ -491,6 +517,7 @@ export default function AdminDashboard() {
               value={editStudent.email}
               onChange={e => handleEditStudentChange('email', e.target.value)}
               required
+              disabled={editStudentSaving === "saving"}
             />
           </div>
           <div className="form-group">
@@ -500,6 +527,7 @@ export default function AdminDashboard() {
               value={editStudent.regNo}
               onChange={e => handleEditStudentChange('regNo', e.target.value)}
               required
+              disabled={editStudentSaving === "saving"}
             />
           </div>
           <div className="form-group">
@@ -509,9 +537,12 @@ export default function AdminDashboard() {
               value={editStudent.password}
               onChange={e => handleEditStudentChange('password', e.target.value)}
               placeholder="Leave blank to keep unchanged"
+              disabled={editStudentSaving === "saving"}
             />
           </div>
-          <button type="submit" className="btn btn-primary">Save Changes</button>
+          <button type="submit" className="btn btn-primary" disabled={editStudentSaving === "saving" || editStudentSaving === "saved"}>
+            {editStudentSaving === "saving" ? "Saving..." : editStudentSaving === "saved" ? "Saved" : "Save Changes"}
+          </button>
         </form>
       </div>
     </div>
@@ -587,6 +618,7 @@ export default function AdminDashboard() {
                   value={editStudent.name}
                   onChange={e => handleEditStudentChange('name', e.target.value)}
                   required
+                  disabled={editStudentSaving === "saving"}
                 />
               </div>
               <div className="form-group">
@@ -596,6 +628,7 @@ export default function AdminDashboard() {
                   value={editStudent.email}
                   onChange={e => handleEditStudentChange('email', e.target.value)}
                   required
+                  disabled={editStudentSaving === "saving"}
                 />
               </div>
               <div className="form-group">
@@ -605,6 +638,7 @@ export default function AdminDashboard() {
                   value={editStudent.regNo}
                   onChange={e => handleEditStudentChange('regNo', e.target.value)}
                   required
+                  disabled={editStudentSaving === "saving"}
                 />
               </div>
               <div className="form-group">
@@ -614,9 +648,12 @@ export default function AdminDashboard() {
                   value={editStudent.password}
                   onChange={e => handleEditStudentChange('password', e.target.value)}
                   placeholder="Leave blank to keep unchanged"
+                  disabled={editStudentSaving === "saving"}
                 />
               </div>
-              <button type="submit" className="btn btn-primary">Save Changes</button>
+              <button type="submit" className="btn btn-primary" disabled={editStudentSaving === "saving" || editStudentSaving === "saved"}>
+                {editStudentSaving === "saving" ? "Saving..." : editStudentSaving === "saved" ? "Saved" : "Save Changes"}
+              </button>
             </form>
           </div>
         </div>
@@ -637,6 +674,7 @@ export default function AdminDashboard() {
                   value={editFaculty.name}
                   onChange={e => handleEditFacultyChange('name', e.target.value)}
                   required
+                  disabled={editFacultySaving === "saving"}
                 />
               </div>
               <div className="form-group">
@@ -646,6 +684,7 @@ export default function AdminDashboard() {
                   value={editFaculty.email}
                   onChange={e => handleEditFacultyChange('email', e.target.value)}
                   required
+                  disabled={editFacultySaving === "saving"}
                 />
               </div>
               <div className="form-group">
@@ -655,6 +694,7 @@ export default function AdminDashboard() {
                   value={editFaculty.facultyRegNo || ""}
                   onChange={e => handleEditFacultyChange('facultyRegNo', e.target.value)}
                   required
+                  disabled={editFacultySaving === "saving"}
                 />
               </div>
               <div className="form-group">
@@ -664,9 +704,12 @@ export default function AdminDashboard() {
                   value={editFaculty.password}
                   onChange={e => handleEditFacultyChange('password', e.target.value)}
                   placeholder="Leave blank to keep unchanged"
+                  disabled={editFacultySaving === "saving"}
                 />
               </div>
-              <button type="submit" className="btn btn-primary">Save Changes</button>
+              <button type="submit" className="btn btn-primary" disabled={editFacultySaving === "saving" || editFacultySaving === "saved"}>
+                {editFacultySaving === "saving" ? "Saving..." : editFacultySaving === "saved" ? "Saved" : "Save Changes"}
+              </button>
             </form>
           </div>
         </div>
@@ -1112,7 +1155,7 @@ export default function AdminDashboard() {
                           attendanceWeight: e.target.value
                         })
                       }
-                      disabled={loading}
+                      disabled={editUpdateSaving === "Updating"}
                     />
                   </div>
                   <div className="form-group">
@@ -1128,7 +1171,7 @@ export default function AdminDashboard() {
                           internalWeight: e.target.value
                         })
                       }
-                      disabled={loading}
+                      disabled={editUpdateSaving === "Updating"}
                     />
                   </div>
                   <div className="form-group">
@@ -1144,7 +1187,7 @@ export default function AdminDashboard() {
                           assignmentWeight: e.target.value
                         })
                       }
-                      disabled={loading}
+                      disabled={editUpdateSaving === "Updating"}
                     />
                   </div>
                 </div>
@@ -1166,7 +1209,7 @@ export default function AdminDashboard() {
                           mediumRiskMin: e.target.value
                         })
                       }
-                      disabled={loading}
+                      disabled={editUpdateSaving === "Updating"}
                     />
                   </div>
                   <div className="form-group">
@@ -1182,14 +1225,14 @@ export default function AdminDashboard() {
                           lowRiskMin: e.target.value
                         })
                       }
-                      disabled={loading}
+                      disabled={editUpdateSaving === "Updating"}
                     />
                   </div>
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary" disabled={loading}>
-                {loading ? "Updating..." : "Update Settings"}
+              <button type="submit" className="btn btn-primary" disabled={editUpdateSaving === "Updating" || editUpdateSaving === "Updated"}>
+                {editUpdateSaving === "Updating..." ? "Updating..." : editUpdateSaving === "Updated" ? "Updated" : "Update Settings"}
               </button>
             </form>
 

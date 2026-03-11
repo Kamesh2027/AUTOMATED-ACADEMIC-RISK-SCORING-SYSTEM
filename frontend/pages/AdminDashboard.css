@@ -99,6 +99,7 @@
 .btn-primary {
   background: var(--primary);
   color: #fff;
+  align-items: end;
   box-shadow: 0 8px 20px rgba(33, 150, 83, 0.08);
   border-radius: var(--radius);
 }

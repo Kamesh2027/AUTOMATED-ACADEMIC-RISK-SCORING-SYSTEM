@@ -10,6 +10,9 @@ export const StudentSidebar = ({ activeSection, onSectionChange }) => {
 
   return (
     <aside className="student-sidebar">
+      <div className="aarss-brand">
+          <h1>AARSS Portal</h1>
+      </div>
       <nav className="sidebar-nav">
         {sections.map((section) => (
           <button

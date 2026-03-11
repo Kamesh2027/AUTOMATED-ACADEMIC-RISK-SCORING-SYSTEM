@@ -7,9 +7,38 @@
   min-width: 240px;
 }
 
+
 .risk-circle-header {
-  color: #b0b7c3;
+  color: #1aff8d;
   font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.risk-circle-header3 {
+  color: #a042f9b9;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.risk-circle-header1 {
+  color: #ff1a48a1;
+  display: "flex";
+  text-align: "center";
+  justify-content: center;
+  align-items: "center";
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.risk-circle-header2 {
+  color: #45f889;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 0.5rem;

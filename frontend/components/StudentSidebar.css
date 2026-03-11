@@ -5,7 +5,6 @@
   position: fixed;
   left: 0;
   top: 0;
-  padding-top: 65px;
   box-shadow: 4px 0 15px rgba(101, 178, 191, 0.3);
   overflow-y: auto;
   z-index: 99;

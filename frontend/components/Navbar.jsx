@@ -12,11 +12,12 @@ export const Navbar = ({ user, onLogout }) => {
 
   return (
     <nav className={`navbar ${user?.role === "faculty" ? "faculty-navbar" : ""}`}>
-      <div className="navbar-container">
+      {user?.role === "faculty" && (
         <div className="navbar-brand">
           <h1>AARSS Portal</h1>
         </div>
-
+      )}
+      <div className="navbar-container">
         {user && (
           <div className="navbar-user">
             <div className="user-info">

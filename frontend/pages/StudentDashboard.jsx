@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Navbar } from "../components/Navbar";
 import { StudentSidebar } from "../components/StudentSidebar";
-import RiskLevelCircle from "../components/RiskLevelCircle";
+import { RiskLevelCircle , AttendanceCircle, CgpaCircle, AssignmentCircle } from "../components/RiskLevelCircle";
 import "./StudentDashboard.css";
 import { API_BASE_URL } from "../config";
 import Modal from "../components/Modal";
@@ -29,6 +29,10 @@ export default function StudentDashboard() {
       markFeedbackAsRead(item._id);
     }
   };
+
+  // For analytics circles
+  const radius = 28;
+  const circumference = 2 * Math.PI * radius;
 
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -250,47 +254,33 @@ export default function StudentDashboard() {
 
           {/* Analytics Section */}
           {activeSection === "analytics" && (
-            <div className="metrics-section">
-              <h2>Your Performance Metrics</h2>
-              <div className="metrics-grid">
-                <div className="metric-card">
-                  <div className="metric-content">
-                    <h3>Attendance</h3>
-                    <div className="metric-value">{student.attendance}%</div>
-                    <div className="meter">
-                      <div
-                        className="meter-fill"
-                        style={{ width: `${student.attendance}%` }}
-                      ></div>
-                    </div>
-                  </div>
+            <div className="analytics-section">
+              <h2>Your Performance Analytics</h2>
+              <div className="analytics-cards-row">
+                {/* Attendance */}
+                <div className="analytics-card">
+                    <AttendanceCircle className="atcircle" value={student?.attendance ?? 0} label={"Attendance"} />
                 </div>
 
-                <div className="metric-card">
-                  <div className="metric-content">
-                    <h3>Obtained Marks</h3>
-                    <div className="metric-value">{student.marks}%</div>
-                    <div className="meter">
-                      <div
-                        className="meter-fill"
-                        style={{ width: `${student.marks}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                {/* Obtained Marks */}
+                <div className="analytics-card">
+                    <CgpaCircle className="accircle" value={student?.marks ?? 0} label={"CGPA"} />
                 </div>
-
-                <div className="metric-card">
-                  <div className="metric-content">
-                    <h3>Assignments</h3>
-                    <div className="metric-value">{student.assignments}%</div>
-                    <div className="meter">
-                      <div
-                        className="meter-fill"
-                        style={{ width: `${student.assignments}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                {/* Assignments */}
+                <div className="analytics-card">
+                    <AssignmentCircle className="ascircle" value={student?.assignments ?? 0} label={"Assignments"} />
                 </div>
+                {/* Current GPA */}
+                {/* <div className="analytics-card">
+                  <div className="analytics-icon" style={{ background: '#f6f3ff' }}>
+                    <svg width="32" height="32" fill="none"><rect x="6" y="8" width="20" height="16" rx="3" fill="#a259ff"/><polyline points="10,22 16,14 22,18" stroke="#fff" strokeWidth="2" fill="none"/></svg>
+                  </div>
+                  <div className="analytics-gpa">
+                    <span className="analytics-gpa-value">{student?.gpa || '3.8'} / 4.0</span>
+                    <span className="analytics-gpa-change" style={{ color: '#4caf50', fontWeight: 600 }}>↑ 5%</span>
+                  </div>
+                  <div className="analytics-label">Current GPA</div> 
+                </div>*/}
               </div>
             </div>
           )}

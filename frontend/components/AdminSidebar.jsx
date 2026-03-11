@@ -12,6 +12,9 @@ export const AdminSidebar = ({ activeSection, onSectionChange }) => {
 
   return (
     <aside className="admin-sidebar">
+      <div className="aarss-brand">
+          <h1>AARSS Portal</h1>
+      </div>
       <nav className="sidebar-nav">
         {sections.map((section) => (
           <button

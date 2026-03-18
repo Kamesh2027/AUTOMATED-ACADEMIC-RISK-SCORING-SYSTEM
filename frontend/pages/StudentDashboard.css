@@ -58,7 +58,7 @@
   margin-top: 1rem;
 }
 .student-dashboard {
-  margin-top: 70px;
+  padding-top: 70px;
   min-height: 100vh;
   background:
     radial-gradient(700px 400px at 15% 20%, rgba(125, 196, 244, 0.35), transparent 60%),
@@ -70,7 +70,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  padding-top: 10px;
+  padding-top: 20px;
   margin-left: 250px;
 }
 
@@ -308,18 +308,21 @@
   text-transform: uppercase;
 }
 
-.info-item p {
-  margin: 0;
-  color: #333;
-  font-size: 15px;
+.info-item {
+  background: #f7f9fb;
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  min-width: 220px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 1rem;
+  word-break: break-all;
+  white-space: normal;
+  overflow: visible;
 }
-
-.tips-section {
-  background: white;
-  border-radius: 12px;
+  /* border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .tips-section h2 {
   color: #333;
@@ -375,6 +378,8 @@
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 530px;
 }
 
 .feedback-header {

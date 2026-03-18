@@ -292,7 +292,7 @@ export default function StudentDashboard() {
                 <h2>Feedback from Faculty</h2>
                 <span className="feedback-count">{feedback.length} message{feedback.length !== 1 ? 's' : ''}</span>
               </div>
-
+            
               {feedbackLoading ? (
                 <div className="loading-text">Loading feedback...</div>
               ) : feedback.length === 0 ? (

@@ -1,5 +1,5 @@
 .admin-dashboard {
-  margin-top: 70px;
+  padding-top: 70px;
   background: var(--neutral);
   min-height: 100vh;
   display: flex;
@@ -11,14 +11,12 @@
     linear-gradient(135deg, #f6f0e9 0%, #e8f5f2 100%);
 }
 
-.dashboard-container {
+.adashboard-container {
   margin-left: 250px;
-  margin-top: 70px;
-  padding: 2.2rem 1rem;
   box-sizing: border-box;
   overflow-x: hidden;
+  padding-top: 20px;
   width: 100%;
-  padding-top: 70px;
   max-width: 1100px;
 }
 
@@ -37,10 +35,15 @@
 .section-content, .tab-content {
   background: var(--surface);
   padding: 2.2rem;
+  padding-top: 20px;
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
-  margin-left: 40px;
   width: 100%;
+}
+
+.risk-settings-section {
+  height: 600px;
+  overflow-y: auto;
 }
 
 .tab-content h2 {
@@ -185,6 +188,8 @@
 .table-container {
   overflow-x: auto;
   margin-top: 1.5rem;
+  height: 400px;
+  overflow-y: auto;
 }
 
 .table {
@@ -400,7 +405,7 @@
 }
 
 @media (max-width: 768px) {
-  .dashboard-container {
+  .adashboard-container {
     margin-left: 0;
     margin-top: 70px;
     padding: 1rem;
@@ -498,9 +503,9 @@ table, th, td {
 table {
   border-collapse: collapse;
 }
-.dashboard-overview {
+/* .dashboard-overview {
   margin-left: 70px;
-}
+} */
 
 .do{
   margin-bottom: 20px;
@@ -660,7 +665,7 @@ table {
   .admin-sidebar {
     display: none;
   }
-  .dashboard-container {
+  .adashboard-container {
     margin-left: 0;
     padding: 1rem 0.5rem;
   }
@@ -674,7 +679,7 @@ table {
   .admin-dashboard {
     margin-top: 40px;
   }
-  .dashboard-container {
+  .adashboard-container {
     padding: 0.5rem;
   }
   .section-content, .tab-content {

@@ -15,9 +15,16 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    let regNo = undefined;
+    if (user.role === "student") {
+      const Student = require("../models/Student");
+      const studentDoc = await Student.findOne({ email: user.email });
+      if (studentDoc) regNo = studentDoc.regNo;
+    }
+
     // Create JWT token
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role, name: user.name },
+      { id: user._id, email: user.email, role: user.role, name: user.name, regNo },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -27,7 +34,8 @@ exports.login = async (req, res) => {
       id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role
+      role: user.role,
+      ...(regNo && { regNo })
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

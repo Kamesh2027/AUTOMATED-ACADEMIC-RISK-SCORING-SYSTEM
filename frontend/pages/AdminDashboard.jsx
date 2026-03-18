@@ -715,7 +715,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      <div className="dashboard-container">
+      <div className="adashboard-container">
         {error && <div className="alert alert-error">{error}</div>}
         {showToast && (
           <div style={{
@@ -1136,6 +1136,7 @@ export default function AdminDashboard() {
 
         {/* Risk Settings Section */}
         {activeSection === "riskSettings" && (
+          <div className="risk-settings-section">
           <div className="section-content">
             <h2 className="risklevel">Risk Level Settings</h2>
             <form onSubmit={handleUpdateSettings} className="form">
@@ -1262,8 +1263,8 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
+          </div>
         )}
       </div>
     </div>
-  );
-}
+    )}

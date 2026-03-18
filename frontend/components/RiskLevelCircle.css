@@ -9,8 +9,8 @@
 
 
 .risk-circle-header {
-  color: #1aff8d;
-  font-size: 13px;
+  color: #00000090;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 0.5rem;
@@ -18,7 +18,7 @@
 
 .risk-circle-header3 {
   color: #a042f9b9;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 0.5rem;
@@ -30,7 +30,7 @@
   text-align: "center";
   justify-content: center;
   align-items: "center";
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 0.5rem;
@@ -38,7 +38,7 @@
 
 .risk-circle-header2 {
   color: #45f889;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 0.5rem;

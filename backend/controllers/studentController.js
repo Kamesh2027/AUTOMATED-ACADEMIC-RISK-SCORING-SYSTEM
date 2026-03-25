@@ -89,6 +89,7 @@ exports.addStudent = async (req, res) => {
     } else {
       // Create a default password for the student; admin should change it later
       createdPassword = "password";
+      // Password will be hashed by User model pre-save hook
       user = await User.create({ name, email, password: createdPassword, role: "student" });
     }
 

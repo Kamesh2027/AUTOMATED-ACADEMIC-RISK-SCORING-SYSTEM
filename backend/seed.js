@@ -17,12 +17,16 @@ const seedDatabase = async () => {
     await Feedback.deleteMany({});
 
     // Create admin user only
+    const bcrypt = require("bcrypt");
+    const hashedPassword = await bcrypt.hash("password", 10);
     const admin = await User.create({
       name: "Admin User",
       email: "admin@email.com",
-      password: "password",
+      password: "password", // Will be hashed by User model pre-save hook
       role: "admin"
     });
+    // Print the admin user to verify
+    console.log("Admin user in DB:", admin);
 
     // Create default risk settings
     const riskSettings = await RiskSettings.create({

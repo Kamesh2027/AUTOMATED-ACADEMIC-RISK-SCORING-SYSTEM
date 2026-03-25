@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
 exports.login = async (req, res) => {
   try {
@@ -10,8 +11,11 @@ exports.login = async (req, res) => {
     }
 
     const user = await User.findOne({ email });
-
-    if (!user || user.password !== password) {
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
@@ -120,7 +124,7 @@ exports.updateFaculty = async (req, res) => {
     if (name !== undefined) faculty.name = name;
     if (email !== undefined) faculty.email = email;
     if (facultyRegNo !== undefined) faculty.facultyRegNo = facultyRegNo;
-    if (password) faculty.password = password;
+    if (password) faculty.password = password; // Will be hashed by pre-save hook
     await faculty.save();
     res.json({ message: "Faculty member updated successfully", faculty });
   } catch (error) {

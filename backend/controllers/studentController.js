@@ -4,6 +4,8 @@ const Feedback = require("../models/Feedback"); // Add Feedback model
 const { calculateRisk } = require("../utils/riskCalculator");
 const Notification = require("../models/Notification");
 
+const ExcelJS = require("exceljs");
+
 exports.getStudents = async (req, res) => {
   try {
     const students = await Student.find().populate("userId lastUpdatedBy");
@@ -30,6 +32,55 @@ exports.getStudents = async (req, res) => {
     res.json(updated);
   } catch (error) {
     res.status(500).json({ message: "Error fetching students", error: error.message });
+  }
+};
+
+// Admin-only: Export all students to Excel
+exports.exportStudentsExcel = async (req, res) => {
+  try {
+    // Only allow admin
+    if (!req.user || req.user.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden: Admins only" });
+    }
+    const students = await require("../models/Student").find().lean();
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Students");
+
+    if (students.length === 0) {
+      worksheet.addRow(["No students found"]);
+    } else {
+      // Only export selected fields
+      const exportFields = [
+        { header: 'Name', key: 'name' },
+        { header: 'Email', key: 'email' },
+        { header: 'Reg No', key: 'regNo' },
+        { header: 'Attendance', key: 'attendance' },
+        { header: 'Marks', key: 'marks' },
+        { header: 'Assignments', key: 'assignments' },
+        { header: 'Score', key: 'score' },
+        { header: 'Risk Level', key: 'riskLevel' }
+      ];
+      worksheet.columns = exportFields;
+      students.forEach(student => {
+        // Only include the selected fields
+        const row = {};
+        exportFields.forEach(f => { row[f.key] = student[f.key]; });
+        worksheet.addRow(row);
+      });
+    }
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=students.xlsx"
+    );
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    res.status(500).json({ message: "Error exporting students", error: error.message });
   }
 };
 

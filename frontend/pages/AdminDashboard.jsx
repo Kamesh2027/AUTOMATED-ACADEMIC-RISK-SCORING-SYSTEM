@@ -6,9 +6,42 @@ import { AdminSidebar } from "../components/AdminSidebar";
 import "./AdminDashboard.css";
 import { API_BASE_URL } from "../config";
 
+// Helper to download a file from a blob
+function downloadBlob(blob, filename) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+}
+
 //const API_BASE_URL = "http://localhost:5000/api";
 
 export default function AdminDashboard() {
+  // ...existing code...
+
+  // Export students to Excel
+  const handleExportExcel = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/students/export/excel`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        setError('Failed to export students.');
+        return;
+      }
+      const blob = await response.blob();
+      downloadBlob(blob, 'students.xlsx');
+    } catch (err) {
+      setError('Error exporting students: ' + err.message);
+    }
+  };
     facultyId: ""
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
@@ -797,6 +830,13 @@ export default function AdminDashboard() {
 
               
             </div>
+
+              {/* Export to Excel Button */}
+              <div style={{ marginTop: 24, textAlign: 'right' }}>
+                <button className="btn btn-primary" onClick={handleExportExcel}>
+                  Export Students to Excel
+                </button>
+              </div>
 
             {/* Bottom Section */}
             <div className="dashboard-bottom">

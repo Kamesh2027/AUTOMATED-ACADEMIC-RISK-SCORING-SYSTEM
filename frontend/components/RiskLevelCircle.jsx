@@ -82,7 +82,7 @@ const AttendanceCircle = ({ value = 65, label = "MODERATE", increase = 5 }) => {
           />
           <circle
             className="risk-circle-bar"
-            stroke="#a042f9b9"
+            stroke="#7a648fb9"
             fill="none"
             strokeWidth={stroke}
             strokeLinecap="round"
@@ -127,7 +127,7 @@ const CgpaCircle = ({ value = 65, label = "MODERATE", increase = 5 }) => {
           />
           <circle
             className="risk-circle-bar"
-            stroke="#ff1a48a1"
+            stroke="#94616ba1"
             fill="none"
             strokeWidth={stroke}
             strokeLinecap="round"
@@ -172,7 +172,7 @@ const AssignmentCircle = ({ value = 65, label = "MODERATE", increase = 5 }) => {
           />
           <circle
             className="risk-circle-bar"
-            stroke="#45f889"
+            stroke="#679b7b"
             fill="none"
             strokeWidth={stroke}
             strokeLinecap="round"

@@ -12,10 +12,6 @@ mongoose.connect(MONGO_URI)
 async function seedFaculty() {
   try {
     await Faculty.deleteMany({}); // Clear existing data (optional)
-    await Faculty.create([
-      { name: "Kabilan R", facultyRegNo: "FEC001", email: "kabilanr.ec23@bitsathy.ac.in" },
-      { name: "Steve Smith", facultyRegNo: "FEC002", email: "steve.smith@bitsathy.ac.in" }
-    ]);
     console.log("Faculty seeded successfully");
   } catch (err) {
     console.error("Error seeding faculty:", err);
